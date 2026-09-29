@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Battle Mind — Smooth Scroll · Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/base.css">
+<style>
+:root{--bg:#fff;--ink:#0D131A;--muted:rgba(13,19,26,.62);--line:rgba(13,19,26,.12);--card:#fff}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+h1,h2,h3{text-transform:uppercase}
+/* hero: white on red */
+/* v3 hero: a rhythm field. Red dots swell under the pointer and ripple outward when it moves fast. */
+.hero{min-height:100svh;padding:130px var(--gut) 40px;display:flex;flex-direction:column;justify-content:space-between;background:var(--light);color:var(--black);position:relative;overflow:hidden;cursor:crosshair}
+.hero>#field{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.hero>*:not(#field){position:relative;z-index:1}
+.hero .try{font:600 12px var(--f-display);letter-spacing:.24em;text-transform:uppercase;color:var(--red)}
+.hero .top{display:flex;justify-content:space-between;gap:20px;font:600 13px/1.2 var(--f-display);letter-spacing:.2em;text-transform:uppercase;flex-wrap:wrap}
+.hero h1{font-size:clamp(64px,13vw,220px);line-height:.88;margin:40px 0}
+.hero h1 span{display:block;will-change:transform}
+.hero h1 span:nth-child(2){padding-left:12vw;color:var(--red)}
+.hero h1 span:nth-child(3){text-align:right;color:transparent;-webkit-text-stroke:2px var(--black)}
+.hero .bottom{display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap}
+.hero .bottom p{max-width:42ch;font-size:18px}
+.hero .btn{background:var(--red);color:#fff}
+
+.marquee{overflow:hidden;background:var(--red);color:#fff;padding:24px 0;transform:rotate(-2deg);margin:-30px -2vw 40px;width:104vw;position:relative;z-index:2}
+.marquee .track{display:flex;width:max-content;will-change:transform}
+.marquee span{font:700 clamp(42px,6.4vw,96px)/1 var(--f-display);letter-spacing:.04em;text-transform:uppercase;padding-right:.6em;white-space:nowrap}
+.marquee span b{color:var(--black)}
+.marquee span s{text-decoration:none;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.55)}
+
+.meter{position:fixed;right:18px;bottom:18px;z-index:40;display:flex;align-items:center;gap:10px;padding:9px 13px;border-radius:999px;background:var(--black);color:#fff;font:600 11px/1 var(--f-display);letter-spacing:.2em}
+.meter i{width:70px;height:4px;border-radius:4px;background:rgba(255,255,255,.2);overflow:hidden;display:block}
+.meter i::after{content:"";display:block;height:100%;background:var(--red);width:calc(var(--v,0)*100%)}
+html:not(.motion) .meter{display:none}
+
+section.blk{padding:clamp(90px,12vw,160px) 0}
+.h2{font-size:clamp(48px,7.4vw,118px);line-height:.9;margin:14px 0 20px}
+.lead{font-size:18px;color:var(--muted);max-width:52ch;line-height:1.65}
+.gallery{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:18px;margin-top:60px}
+.gallery figure{margin:0;border-radius:18px;overflow:hidden;position:relative;will-change:transform;background:var(--black)}
+.gallery figure img{width:100%;height:118%;object-fit:cover;will-change:transform}
+.gallery figcaption{position:absolute;left:18px;bottom:16px;color:#fff;font:600 14px/1 var(--f-display);letter-spacing:.2em;text-transform:uppercase}
+.gallery figcaption b{color:var(--red);font-family:var(--f-num);font-size:20px;margin-right:6px}
+.g1{grid-column:1/8;aspect-ratio:16/11}.g2{grid-column:8/13;aspect-ratio:4/5;margin-top:120px!important}
+.g3{grid-column:2/7;aspect-ratio:4/5;margin-top:-60px!important}.g4{grid-column:7/13;aspect-ratio:16/12}
+@media (max-width:760px){.gallery{grid-template-columns:minmax(0,1fr)}.gallery figure{grid-column:auto!important;margin-top:0!important;aspect-ratio:4/3!important}}
+
+.list{border-top:2px solid var(--ink);margin-top:50px}
+.list a{display:grid;grid-template-columns:70px minmax(0,1fr) auto;gap:20px;align-items:baseline;padding:26px 0;border-bottom:1px solid var(--line);text-decoration:none;position:relative}
+.list .no{font:700 24px/1 var(--f-num);color:var(--red)}
+.list h3{font-size:clamp(32px,4.8vw,72px);line-height:1;transition:color .3s;transform-origin:0 50%}
+.big b{transform-origin:0 100%}
+.h2{transform-origin:0 50%}
+.list span.l{color:var(--muted);font-size:15px;max-width:28ch;text-align:right}
+.list a:hover h3{color:var(--red)}
+.list a{transition:padding .5s cubic-bezier(.2,.7,.2,1)}.list a:hover{padding-left:24px}
+@media (max-width:760px){.list a{grid-template-columns:40px minmax(0,1fr)}.list span.l{grid-column:2;text-align:left}}
+.cursor-img{position:fixed;left:0;top:0;width:280px;aspect-ratio:1;border-radius:18px;overflow:hidden;pointer-events:none;z-index:30;opacity:0;transition:opacity .3s;box-shadow:0 30px 60px -20px rgba(13,19,26,.6)}
+.cursor-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .25s}
+.cursor-img img.on{opacity:1}
+@media (hover:none){.cursor-img{display:none}}
+
+.big{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;border-top:2px solid var(--ink);margin-top:50px}
+.big div{padding:28px 20px 10px 0}
+.big b{display:block;font:700 clamp(56px,6vw,100px)/1 var(--f-num);color:var(--red)}
+.big div>span{color:var(--muted);font-size:15px;display:block;margin-top:8px}
+@media (max-width:860px){.big{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.about{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(30px,6vw,90px);align-items:center}
+.about .pic{border-radius:18px;overflow:hidden;background:var(--light)}
+.about p+p{margin-top:14px}
+@media (max-width:860px){.about{grid-template-columns:minmax(0,1fr)}}
+.bm-review{background:var(--light);box-shadow:none}
+.bm-logos{margin-top:40px}
+.final{background:var(--red);color:#fff;padding:clamp(110px,14vw,180px) var(--gut);text-align:center}
+.final h2{font-size:clamp(60px,11vw,180px);line-height:.88}
+.final h2 b{color:var(--black)}
+.final p{margin:20px 0 30px;font-size:19px;opacity:.8}
+.bm-foot{background:#fff;border-top:1px solid var(--line)}
+</style>
+</head>
+<body id="top" class="logo-red">
+<header class="bm-nav" data-bm="nav"></header>
+
+<section class="hero" data-hero>
+  <canvas id="field" aria-hidden="true"></canvas>
+  <div class="top"><span id="eyebrow"></span><span>Kuala Lumpur · 200+ clients</span></div>
+  <h1 id="h1"><span data-vel="0.6">Focus.</span><span data-vel="-0.9">Build.</span><span data-vel="0.4">Win.</span></h1>
+  <div class="bottom"><div><p class="try" aria-hidden="true">Move your mouse — the field follows your rhythm</p><p id="sub" style="margin-top:10px"></p></div><a class="btn" id="cta1"></a></div>
+</section>
+
+<div class="marquee" aria-hidden="true"><div class="track" id="track"></div></div>
+
+<section class="blk"><div class="wrap">
+  <div class="kicker">How we work</div><h2 class="h2">Strategy. Creative. Performance.</h2>
+  <p class="lead">Scroll feels heavier here on purpose. Every move eases in and eases out, the way a camera dolly does.</p>
+  <div class="gallery" id="gallery"></div>
+</div></section>
+
+<section class="blk" id="services" style="padding-top:0"><div class="wrap">
+  <div class="kicker">Services</div><h2 class="h2">Seven crafts.</h2>
+  <div class="list" id="list"></div>
+</div></section>
+<div class="cursor-img" id="cimg" aria-hidden="true"></div>
+
+<section class="blk" style="padding-top:0"><div class="wrap"><div class="kicker">Results</div><h2 class="h2">Results over hype.</h2><div class="big" id="big"></div></div></section>
+<section class="blk" style="padding-top:0"><div class="wrap about" id="about"></div></section>
+<section class="blk" id="clients" style="padding-top:0"><div class="wrap"><div class="kicker">Trusted by 200+ clients</div><h2 class="h2">Good company.</h2></div><div class="bm-logos" data-bm="logos"></div></section>
+<section class="blk" id="reviews" style="padding-top:0"><div class="wrap"><div class="kicker">Google reviews</div><h2 class="h2">Kind words.</h2><div class="bm-reviews" data-bm="reviews" style="margin-top:40px"></div></div></section>
+<section class="blk" id="faq" style="padding-top:0"><div class="wrap" style="max-width:900px"><div class="kicker">FAQ</div><h2 class="h2">Asked often.</h2><div class="bm-faq" data-bm="faq" style="margin-top:34px"></div></div></section>
+<section class="final"><div class="kicker">Ready for digital marketing?</div><h2>Leads <b>&gt;</b> Likes.</h2><p>Experience the adventure with us.</p><a class="btn" id="cta2"></a></section>
+<footer class="bm-foot" data-bm="foot"></footer>
+<div class="meter" aria-hidden="true">SPEED <i id="vm"></i></div>
+
+<script src="../shared/content.js"></script>
+<script src="../shared/kit.js"></script>
+<script>
+const { B, img, esc, stat } = BMK;
+eyebrow.textContent = B.eyebrow; sub.textContent = B.sub;
+for (const a of [cta1, cta2]) { a.href = B.cta.href; a.target = "_blank"; a.rel = "noopener"; a.textContent = B.cta.label + " →"; }
+const m = B.mantra.map(([a, b]) => `<span>${a} <b>&gt;</b> <s>${b}</s></span>`).join("");
+track.innerHTML = m + m + m + m;
+gallery.innerHTML = B.story.map((c, i) => `<figure class="g${i + 1}" data-vel="${[0.5, -0.7, 0.8, -0.4][i]}"><img data-par src="${img(c.img, 1)}" srcset="${img(c.img, 1)} 768w, ${img(c.img)} 1536w" sizes="(max-width:760px) 100vw, 55vw" alt="" loading="lazy"><figcaption><b>${c.k}</b>${esc(c.tag)}</figcaption></figure>`).join("");
+list.innerHTML = B.services.map((s, i) => `<a href="${B.cta.href}" target="_blank" rel="noopener" data-i="${i}"><span class="no">0${i + 1}</span><h3>${esc(s.name)}</h3><span class="l">${esc(s.line)}</span></a>`).join("");
+cimg.innerHTML = B.services.map((s) => `<img src="${img(s.img, 1)}" alt="" loading="lazy">`).join("");
+big.innerHTML = B.stats.map((s) => `<div><b>${stat(s)}</b><span>${esc(s.label)}</span></div>`).join("");
+const A = B.about;
+about.innerHTML = `<div class="pic"><img src="${img(A.person.img)}" alt="${esc(A.person.name)}, ${esc(A.person.role)}" loading="lazy"></div><div><div class="kicker">${esc(A.kicker)}</div><h2 class="h2" style="font-size:clamp(42px,5.2vw,80px)">${esc(A.title)}</h2>${A.body.map((p) => `<p class="lead">${esc(p)}</p>`).join("")}<p style="margin-top:20px;font-weight:700">${esc(A.person.name)} · <span style="font-weight:400">${esc(A.person.role)}</span></p></div>`;
+BMK.init();
+</script>
+<script src="../shared/interact.js"></script>
+<script>BMX.field(document.getElementById("field"), { gap: 30, base: 0.22 });</script>
+<script src="../shared/vendor/lenis.min.js"></script>
+<script>
+// Motion layer: smooth scroll. Lenis turns wheel/trackpad input into eased, inertial scrolling.
+// Velocity is surfaced on purpose so the inertia is visible: marquee speed/skew/stretch, skewing big type,
+// stretching numbers, lagging review cards, scaling gallery images, and the speed meter.
+if (!BMK.reduce) {
+  const lenis = new Lenis({ lerp: 0.06, wheelMultiplier: 0.9, smoothWheel: true });
+  window.__lenis = lenis;
+  const vels = [...document.querySelectorAll("[data-vel]")], pars = [...document.querySelectorAll("[data-par]")];
+  // big type skews with speed; numbers stretch; review cards trail behind (position only, their copy never skews)
+  document.querySelectorAll(".h2, .list h3, .final h2").forEach((el) => (el.dataset.vskew = ""));
+  document.querySelectorAll(".big b").forEach((el) => (el.dataset.vstretch = ""));
+  document.querySelectorAll(".bm-review").forEach((el, i) => (el.dataset.vlag = [0.6, 1.2, 1.8][i % 3]));
+  const skews = [...document.querySelectorAll("[data-vskew]")], stretches = [...document.querySelectorAll("[data-vstretch]")], lags = [...document.querySelectorAll("[data-vlag]")];
+  let x = 0, v = 0, dir = -1, mx = 0, my = 0, cx = 0, cy = 0;
+  const half = () => track.scrollWidth / 4;
+  function raf(t) {
+    lenis.raf(t);
+    const lv = lenis.velocity || 0;
+    v += (lv - v) * 0.12;
+    if (Math.abs(lv) > 0.3) dir = lv > 0 ? -1 : 1;
+    // marquee: base drift plus scroll velocity, reversing with scroll direction
+    x += dir * (1.5 + Math.abs(v) * 2.4);
+    const w = half(); if (x < -w) x += w; if (x > 0) x -= w;
+    const sk = Math.max(-14, Math.min(14, v * 0.45)), av = Math.min(1, Math.abs(v) / 60);
+    // marquee: faster, leans into the scroll and stretches tall at speed
+    track.style.transform = `translate3d(${x}px,0,0) skewX(${(-sk * 0.9).toFixed(2)}deg) scaleY(${(1 + av * 0.35).toFixed(3)})`;
+    const vh = innerHeight, vis = (el) => { const r = el.getBoundingClientRect(); return r.bottom > -100 && r.top < vh + 100; };
+    for (const el of vels) if (vis(el)) el.style.transform = `translate3d(0,${(v * +el.dataset.vel * 2.2).toFixed(1)}px,0) skewY(${(sk * 0.8).toFixed(2)}deg) scale(${(1 - av * 0.06).toFixed(3)})`;
+    for (const el of skews) if (vis(el)) el.style.transform = `skewY(${(sk * 0.5).toFixed(2)}deg) skewX(${(-sk * 0.6).toFixed(2)}deg)`;
+    for (const el of stretches) if (vis(el)) el.style.transform = `scaleY(${(1 + av * 0.6).toFixed(3)}) skewX(${(-sk * 0.8).toFixed(2)}deg)`;
+    for (const el of lags) if (vis(el)) el.style.transform = `translate3d(0,${(v * +el.dataset.vlag * 1.6).toFixed(1)}px,0)`;
+    for (const im of pars) { const r = im.parentElement.getBoundingClientRect(); if (r.bottom < 0 || r.top > vh) continue; im.style.transform = `translate3d(0,${((r.top + r.height / 2) / vh - 0.5) * -60 - 30}px,0) scale(${(1 + av * 0.12).toFixed(3)})`; }
+    vm.style.setProperty("--v", Math.min(1, Math.abs(v) / 40));
+    cx += (mx - cx) * 0.12; cy += (my - cy) * 0.12;
+    cimg.style.transform = `translate3d(${cx - 140}px,${cy - 140}px,0) rotate(${(mx - cx) * 0.05}deg)`;
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+  document.querySelectorAll('a[href^="#"]').forEach((a) => a.addEventListener("click", (e) => { const t = document.querySelector(a.getAttribute("href")); if (t) { e.preventDefault(); lenis.scrollTo(t, { duration: 1.6 }); } }));
+  // service list: a card follows the cursor with lag, showing the hovered craft
+  const cims = cimg.querySelectorAll("img");
+  addEventListener("pointermove", (e) => { mx = e.clientX; my = e.clientY; });
+  list.addEventListener("pointerover", (e) => { const a = e.target.closest("a"); if (!a) return; cimg.style.opacity = 1; cims.forEach((im, i) => im.classList.toggle("on", i === +a.dataset.i)); });
+  list.addEventListener("pointerleave", () => (cimg.style.opacity = 0));
+}
+</script>
+</body>
+</html>

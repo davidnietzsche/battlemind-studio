@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Battle Mind — Pinned Sections · Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/base.css">
+<style>
+:root{--bg:#fff;--ink:#0D131A;--muted:rgba(13,19,26,.62);--line:rgba(13,19,26,.1);--card:#fff}
+/* 1 · pinned mantra: the frame holds, the words swap */
+.mantra{height:100svh;display:grid;place-items:center;text-align:center;position:relative;overflow:hidden;background:#fff;color:var(--black)}
+/* v3 hero: magnetic type on red. The letters lean away from the pointer and spring back. */
+.mag{min-height:100svh;background:var(--light);color:var(--black);display:grid;align-content:center;padding:120px var(--gut) 60px;position:relative;overflow:hidden;cursor:default}
+.mag .kick{font:600 14px var(--f-display);letter-spacing:.24em;text-transform:uppercase;color:var(--red)}
+.mag h1{font:700 clamp(72px,15.5vw,260px)/.86 var(--f-display);letter-spacing:.04em;text-transform:uppercase;margin:24px 0 30px}
+.mag h1 .row{display:block;white-space:nowrap}
+.mag h1 .row:nth-child(2){color:var(--red)}
+.mag .mg{display:inline-block;will-change:transform}
+.mag .foot3{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap}
+.mag .foot3 p{max-width:44ch;font-size:18px;color:rgba(13,19,26,.72)}
+.mag .try{font:600 12px var(--f-display);letter-spacing:.24em;text-transform:uppercase;color:var(--red);margin-bottom:10px}
+.mantra .eyebrow{position:absolute;top:92px;left:0;right:0;font:600 14px var(--f-display);letter-spacing:.24em;text-transform:uppercase;color:var(--red);padding:0 var(--gut)}
+.pair{position:relative;height:1.05em;width:100%;font:700 clamp(58px,11vw,170px)/1 var(--f-display);letter-spacing:.04em;text-transform:uppercase;z-index:2}
+.pair>div{position:absolute;inset:0;display:flex;justify-content:center;align-items:baseline;gap:.16em;white-space:nowrap}
+.pair i{font-style:normal;color:var(--red)}
+.pair s{text-decoration:none;color:rgba(13,19,26,.3);font-size:.5em}
+html.motion .pair>div:not(:first-child){opacity:0}
+.mantra .final{position:absolute;inset:auto 0 9svh;padding:0 var(--gut);z-index:2}
+.mantra .final h2{font-size:clamp(26px,3.2vw,44px);text-transform:uppercase}
+.mantra .final p{color:rgba(13,19,26,.7);margin:12px auto 22px;max-width:52ch}
+html.motion .mantra .final{opacity:0}
+.mantra .team{position:absolute;left:50%;bottom:0;width:min(1100px,110%);translate:-50% 0;opacity:.14;pointer-events:none;mix-blend-mode:multiply;z-index:1}
+.mantra .dots{position:absolute;bottom:26px;left:50%;translate:-50% 0;display:flex;gap:8px;z-index:3}
+.mantra .dots span{width:8px;height:8px;border-radius:50%;background:rgba(13,19,26,.18);transition:background .3s,width .3s}
+.mantra .dots span.on{background:var(--red);width:22px;border-radius:5px}
+
+/* 2 · pinned services: the stage holds, the lens swaps */
+.svc{height:100svh;overflow:hidden;background:var(--light);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr) minmax(0,1fr);align-items:center;gap:clamp(20px,3vw,48px);padding:90px var(--gut) 50px}
+.svc ol{list-style:none;margin:0;padding:0;display:grid;gap:2px;counter-reset:s}
+.svc li{font:600 clamp(15px,1.3vw,19px)/1.25 var(--f-display);letter-spacing:.04em;text-transform:uppercase;color:rgba(13,19,26,.3);padding:8px 0 8px 40px;position:relative;transition:color .35s;counter-increment:s}
+.svc li::before{content:"0" counter(s);position:absolute;left:0;top:9px;font:700 16px/1 var(--f-num);color:rgba(13,19,26,.3)}
+.svc li.on{color:var(--ink)}
+.svc li.on::before{color:var(--red)}
+.lens{position:relative;aspect-ratio:1;max-height:72svh;justify-self:center;width:100%;perspective:1400px;transform-style:preserve-3d}
+.lens img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:22px;box-shadow:0 40px 80px -30px rgba(13,19,26,.5);backface-visibility:hidden}
+html.motion .lens img:not(:first-child){opacity:0}
+.desc{position:relative;min-height:270px}
+.desc article{position:absolute;inset:0 0 auto}
+html.motion .desc article:not(:first-child){opacity:0}
+.desc h3{font-size:clamp(28px,2.8vw,40px);text-transform:uppercase}
+.desc p{color:var(--muted);margin:10px 0 16px;font-size:17px}
+.desc ul{margin:0;padding:0;list-style:none;display:grid;gap:6px;font-size:15px}
+.desc li::before{content:"— ";color:var(--red)}
+.bar{position:absolute;left:var(--gut);right:var(--gut);bottom:28px;height:3px;background:rgba(13,19,26,.1);border-radius:3px;overflow:hidden}
+.bar i{display:block;height:100%;width:100%;background:var(--red);transform-origin:left;transform:scaleX(var(--p,0))}
+.svc-wrap{position:relative}
+body.logo-white .bm-nav .btn{background:#fff;color:var(--red)}
+@media (max-width:860px){
+  .svc{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto;gap:10px;padding:76px var(--gut) 44px}
+  .svc ol{display:flex;overflow:hidden;gap:14px}.svc li{padding:4px 0 4px 34px;white-space:nowrap}.svc li::before{top:5px}
+  .svc li:not(.on){display:none}
+  .lens{width:min(100%,40svh);aspect-ratio:1}.desc{min-height:230px}
+}
+html:not(.motion) .svc{height:auto;grid-template-columns:minmax(0,1fr)}
+html:not(.motion) .lens,html:not(.motion) .svc ol,html:not(.motion) .bar{display:none}
+html:not(.motion) .desc article{position:static;margin-bottom:28px}
+
+/* 3 · pinned numbers: one number, four truths; surface alternates black / red */
+.nums{height:100svh;position:relative;overflow:hidden;color:#fff;background:var(--black);transition:background .6s}
+.nums .wipe{position:absolute;inset:0;z-index:0;pointer-events:none;transform-origin:left center;transform:scaleX(0);will-change:transform}
+.nums .n{position:absolute;inset:0;display:grid;place-content:center;text-align:center;padding:0 var(--gut);z-index:1}
+html.motion .nums .n~.n{opacity:0}
+.nums b{display:block;font:700 clamp(110px,22vw,320px)/.9 var(--f-num);letter-spacing:0}
+.nums .n>span{font:600 clamp(16px,1.6vw,22px)/1.2 var(--f-display);letter-spacing:.14em;text-transform:uppercase;max-width:30ch;margin:18px auto 0}
+html:not(.motion) .nums{height:auto}html:not(.motion) .nums .n{position:static;padding:60px var(--gut)}
+
+/* 4 · pinned horizontal track: the section holds, the reviews travel sideways */
+.track{height:100svh;overflow:hidden;background:var(--light);display:grid;align-content:center;gap:40px}
+.track .head{padding:0 var(--gut)}
+.htrack{display:flex;gap:22px;padding:0 var(--gut);width:max-content;will-change:transform}
+.htrack .bm-review{width:min(420px,78vw);flex:none;min-height:300px}
+.htrack .bm-review blockquote{font-size:21px}
+.tbar{margin:0 var(--gut);height:3px;background:rgba(13,19,26,.1)}
+.tbar i{display:block;height:100%;background:var(--red);transform-origin:left;transform:scaleX(var(--p,0))}
+html:not(.motion) .track{height:auto;padding:90px 0}
+html:not(.motion) .htrack{width:auto;flex-wrap:wrap}
+section.blk{padding:clamp(90px,12vw,150px) 0}
+.h2{font-size:clamp(38px,5.4vw,74px);text-transform:uppercase;margin:12px 0 16px;max-width:15ch}
+.lead{font-size:18px;color:var(--muted);max-width:56ch;line-height:1.65}
+.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,6vw,90px);align-items:center}
+.about img{border-radius:18px;background:var(--light)}
+.about p+p{margin-top:14px}
+@media (max-width:860px){.about{grid-template-columns:minmax(0,1fr)}}
+.bm-logos{margin-top:44px}
+.final{padding:clamp(100px,14vw,180px) var(--gut);text-align:center;background:var(--red);color:#fff}
+.final h2{font-size:clamp(50px,8vw,120px);text-transform:uppercase}
+.final p{margin:16px 0 30px;font-size:19px;opacity:.9}
+.bm-foot{background:#fff}
+</style>
+</head>
+<body id="top">
+<header class="bm-nav" data-bm="nav"></header>
+
+<section class="mag" id="hero3" data-hero aria-label="Built for growth">
+  <div class="kick" id="kick3"></div>
+  <h1><span class="row" data-mag>Built for</span><span class="row" data-mag>growth.</span></h1>
+  <div class="foot3"><div><p class="try" aria-hidden="true" id="try3">Move your mouse through the letters</p><p id="sub3"></p></div><a class="btn" id="cta3"></a></div>
+</section>
+<section class="mantra" id="mantra" aria-label="What we believe">
+  <p class="eyebrow" id="eyebrow"></p>
+  <div class="pair" id="pair"></div>
+  <div class="final"><h2 id="h1"></h2><p id="sub"></p><a class="btn" id="cta1"></a></div>
+  <img class="team" src="../shared/img/st_layer_arches.webp" alt="" aria-hidden="true">
+  <div class="dots" id="dots" aria-hidden="true"></div>
+</section>
+
+<div class="svc-wrap" id="services">
+<section class="svc" id="svc" aria-label="Services">
+  <ol id="svcList"></ol>
+  <div class="lens" id="lens"></div>
+  <div class="desc" id="desc"></div>
+  <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+</section>
+</div>
+
+<section class="nums" id="nums" aria-label="Results"><div class="wipe" id="wipe" aria-hidden="true"></div></section>
+
+<section class="blk"><div class="wrap about" id="about"></div></section>
+
+<section class="blk" id="clients" style="padding-top:0">
+  <div class="wrap"><div class="kicker">Trusted by 200+ clients</div><h2 class="h2">Big names. Small businesses. Same focus.</h2></div>
+  <div class="bm-logos" data-bm="logos"></div>
+</section>
+<section class="track" id="reviews" aria-label="Google reviews">
+  <div class="head"><div class="kicker">Google reviews</div><h2 class="h2" style="margin-bottom:0">Heard from clients.</h2></div>
+  <div class="htrack" id="htrack" data-bm="reviews"></div>
+  <div class="tbar" aria-hidden="true"><i id="tbar"></i></div>
+</section>
+<section class="blk" id="faq"><div class="wrap" style="max-width:860px"><div class="kicker">FAQ</div><h2 class="h2">Questions, answered.</h2><div class="bm-faq" data-bm="faq" style="margin-top:34px"></div></div></section>
+<section class="final"><h2>Built For Growth.</h2><p>Tell us your objective. We'll bring the plan.</p><a class="btn inv" id="cta2"></a></section>
+<footer class="bm-foot" data-bm="foot"></footer>
+
+<script src="../shared/content.js"></script>
+<script src="../shared/kit.js"></script>
+<script>
+const { B, img, esc, stat } = BMK;
+eyebrow.textContent = B.eyebrow;
+pair.innerHTML = B.mantra.map(([a, b]) => `<div><b>${a}</b><i>&gt;</i><s>${b}</s></div>`).join("");
+dots.innerHTML = B.mantra.map((_, i) => `<span${i ? "" : ' class="on"'}></span>`).join("") + "<span></span>";
+h1.textContent = B.headline.join(" ");
+sub.textContent = B.sub;
+for (const a of [cta1, cta2]) { a.href = B.cta.href; a.target = "_blank"; a.rel = "noopener"; a.textContent = B.cta.label + " →"; }
+svcList.innerHTML = B.services.map((s, i) => `<li${i ? "" : ' class="on"'}>${esc(s.name)}</li>`).join("");
+lens.innerHTML = B.services.map((s, i) => `<img src="${img(s.img, 1)}" alt="" ${i > 1 ? 'loading="lazy"' : ""}>`).join("");
+desc.innerHTML = B.services.map((s) => `<article><div class="kicker">${esc(s.short)}</div><h3>${esc(s.name)}</h3><p>${esc(s.line)}</p><ul>${s.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul></article>`).join("");
+const tints = ["#0D131A", "#D7000F", "#0D131A", "#D7000F"]; // brand surfaces only
+nums.insertAdjacentHTML("beforeend", B.stats.map((s) => `<div class="n"><b>${stat(s)}</b><span>${esc(s.label)}</span></div>`).join(""));
+const A = B.about;
+about.innerHTML = `<img src="${img(A.person.img)}" alt="${esc(A.person.name)}, ${esc(A.person.role)}" loading="lazy"><div><div class="kicker">${esc(A.kicker)}</div><h2 class="h2">${esc(A.title)}</h2>${A.body.map((p) => `<p class="lead">${esc(p)}</p>`).join("")}<p style="margin-top:20px;font-weight:600">${esc(A.person.name)} <span style="color:var(--muted);font-weight:400">· ${esc(A.person.role)}</span></p></div>`;
+kick3.textContent = B.eyebrow; sub3.textContent = B.sub;
+cta3.href = B.cta.href; cta3.target = "_blank"; cta3.rel = "noopener"; cta3.textContent = B.cta.label + " →";
+BMK.init();
+</script>
+<script src="../shared/interact.js"></script>
+<script>document.querySelectorAll("[data-mag]").forEach((el) => BMX.magnetic(el, { radius: 200, force: 42 }));
+if (BMX.touch) try3.textContent = "Built for growth";</script>
+<script src="../shared/vendor/gsap.min.js"></script>
+<script src="../shared/vendor/ScrollTrigger.min.js"></script>
+<script>
+// Motion layer: pinned sections. Each section is held in place (pin) while a scrubbed timeline changes what's inside,
+// so every change follows the scroll exactly, forwards and backwards.
+if (!BMK.reduce) {
+  gsap.registerPlugin(ScrollTrigger);
+  // Inside the sidebar iframe, "fixed" pinning from scroll 0 swallows wheel input (measured: 0px scrolled vs 720px).
+  // Transform pinning scrolls normally there; full screen keeps "fixed", which is smoother with native scroll.
+  if (window.self !== window.top) ScrollTrigger.defaults({ pinType: "transform" });
+  const red = { hero: false, mantra: false, nums: false, final: false };
+  const setRed = (k, v) => { if (red[k] === v) return; red[k] = v; document.body.classList.toggle("logo-white", red.hero || red.mantra || red.nums || red.final); };
+  const onIdx = (els, i, cls = "on") => [...els].forEach((e, j) => e.classList.toggle(cls, j === i));
+
+  // 1 · mantra: each pair slams in from huge and wide-tracked, then collapses away; the ">" turns with the scroll
+  const pairs = gsap.utils.toArray("#pair>div"), dotEls = document.querySelectorAll("#dots span");
+  const t1 = gsap.timeline({ scrollTrigger: { trigger: "#mantra", start: "top top", end: "+=300%", pin: true, scrub: 0.15, anticipatePin: 1,
+    onUpdate: (st) => onIdx(dotEls, Math.min(3, Math.floor(st.progress * 4))) } });
+  pairs.forEach((p, i) => {
+    t1.fromTo(p, { opacity: i ? 0 : 1, scale: i ? 2.6 : 1, yPercent: i ? 30 : 0 },
+      { opacity: 1, scale: 1, yPercent: 0, duration: 0.6, immediateRender: false }, i ? "<" : 0)
+      .fromTo(p.querySelector("i"), { rotate: i ? -180 : 0 }, { rotate: 0, duration: 0.6 }, "<")
+      .to(p.querySelector("s"), { opacity: 0.2, x: 40, duration: 0.4 })
+      .to(p, { opacity: 0, scale: 0.4, yPercent: -30, duration: 0.5 }, "+=0.15");
+  });
+  t1.fromTo(".mantra .final", { opacity: 0, y: 60, scale: 0.9 }, { opacity: 1, y: 0, scale: 1, duration: 0.6 }, "<")
+    .fromTo(".mantra .team", { yPercent: 40, opacity: 0.04 }, { yPercent: 0, opacity: 0.18, ease: "none", duration: t1.duration() }, 0);
+
+  // 2 · services: one scrubbed timeline. The lens flips (rotateY) between services, the copy slides, the list follows.
+  const imgs = lens.querySelectorAll("img"), arts = desc.querySelectorAll("article"), lis = svcList.children, n = imgs.length;
+  const t2 = gsap.timeline({ scrollTrigger: { trigger: "#svc", start: "top top", end: `+=${n * 70}%`, pin: true, scrub: 0.15, anticipatePin: 1,
+    onUpdate: (st) => { bar.style.setProperty("--p", st.progress); onIdx(lis, Math.min(n - 1, Math.floor(st.progress * n))); } } });
+  gsap.set([...imgs].slice(1), { opacity: 0, rotateY: 90, scale: 0.7 });
+  gsap.set([...arts].slice(1), { opacity: 0, x: 90 });
+  for (let i = 0; i < n; i++) {
+    t2.fromTo(imgs[i], { scale: 1 }, { scale: 1.06, duration: 0.6, ease: "none" }); // slow push while it's on screen
+    if (i === n - 1) break;
+    t2.to(imgs[i], { rotateY: -90, scale: 0.75, opacity: 0, duration: 0.4, ease: "power2.in" })
+      .to(arts[i], { x: -90, opacity: 0, duration: 0.35 }, "<")
+      .fromTo(imgs[i + 1], { rotateY: 90, scale: 0.7, opacity: 0 }, { rotateY: 0, scale: 1, opacity: 1, duration: 0.4, ease: "power2.out" })
+      .fromTo(arts[i + 1], { x: 90, opacity: 0 }, { x: 0, opacity: 1, duration: 0.35 }, "<");
+  }
+
+  // 3 · numbers: one held frame. Each value counts up with the scroll; a colour wipe (black ↔ red) cuts between them.
+  const ns = gsap.utils.toArray("#nums .n"), stats = B.stats;
+  const t3 = gsap.timeline({ scrollTrigger: { trigger: "#nums", start: "top top", end: `+=${ns.length * 75}%`, pin: true, scrub: 0.15, anticipatePin: 1,
+    onUpdate: (st) => setRed("nums", tints[Math.min(ns.length - 1, Math.floor(st.progress * ns.length))] === "#D7000F"),
+    onToggle: (st) => !st.isActive && setRed("nums", false) } });
+  gsap.set(ns.slice(1), { opacity: 0 });
+  ns.forEach((el, i) => {
+    const s = stats[i], b = el.querySelector("[data-count]"), from = s.prefix ? parseInt(s.prefix, 10) : 0, o = { v: from };
+    const draw = () => (b.textContent = (s.prefix || "") + Math.round(o.v) + s.suffix);
+    if (i) {
+      t3.set(wipe, { background: tints[i] })
+        .fromTo(wipe, { scaleX: 0 }, { scaleX: 1, duration: 0.35, ease: "power2.inOut" })
+        .to(ns[i - 1], { opacity: 0, scale: 0.8, duration: 0.2 }, "<")
+        .set(nums, { background: tints[i] })
+        .set(wipe, { scaleX: 0 })
+        .fromTo(el, { opacity: 0, scale: 1.25 }, { opacity: 1, scale: 1, duration: 0.25 });
+    }
+    // ranges ("20–25%") hold their true value: a mid-count "20–22%" would read as a wrong claim
+    if (s.prefix) t3.fromTo(el.querySelector("b"), { scale: 0.85 }, { scale: 1, duration: 0.6, ease: "none" });
+    else t3.fromTo(o, { v: from }, { v: s.n, duration: 0.6, ease: "none", onUpdate: draw });
+  });
+
+  // nav stays legible over red (numbers panel on a red value, finale): white wordmark + white button.
+  // State comes from the scroll triggers themselves; nothing is measured per frame.
+  ScrollTrigger.create({ trigger: "section.final", start: "top 40px", end: "bottom 40px", onToggle: (st) => setRed("final", st.isActive) });
+
+
+  // 4 · reviews: the section pins and the cards travel sideways, one full screen of scroll per two cards
+  const dist = () => htrack.scrollWidth - innerWidth;
+  gsap.to(htrack, { x: () => -dist(), ease: "none", scrollTrigger: { trigger: "#reviews", start: "top top", end: () => "+=" + dist() * 1.1,
+    pin: true, scrub: 0.15, anticipatePin: 1, invalidateOnRefresh: true, onUpdate: (st) => tbar.style.setProperty("--p", st.progress) } });
+}
+</script>
+</body>
+</html>

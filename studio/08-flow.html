@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Battle Mind — Flow · Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/base.css">
+<style>
+/* Flow: no blocks. Ink, curves, circles and one red thread that draws itself through the page.
+   Brand only: #D7000F, #0D131A, #fff, #F1F2F2. Oswald / Inter / DIN Condensed. */
+:root{--bg:#0D131A;--ink:#fff;--muted:rgba(255,255,255,.64);--line:rgba(255,255,255,.12);--card:rgba(255,255,255,.05)}
+h1,h2,h3{text-transform:uppercase}
+main{position:relative}
+.sec{position:relative;z-index:2}
+
+/* the red thread */
+#thread{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;overflow:visible}
+#thread path{fill:none;stroke:var(--red);stroke-width:3;stroke-linecap:round}
+#thread path.ghost{stroke:rgba(255,255,255,.07);stroke-width:1.5;stroke-dasharray:2 9}
+#thread circle{fill:var(--red);filter:drop-shadow(0 0 10px rgba(215,0,15,.9))}
+html:not(.motion) #thread{display:none}
+
+/* hero: ink */
+.hero{min-height:100svh;position:relative;overflow:hidden;display:grid;align-content:center;padding:120px var(--gut) 80px}
+.hero video,.hero .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;will-change:transform}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;background:radial-gradient(90% 70% at 30% 50%,rgba(13,19,26,.1),rgba(13,19,26,.75) 80%),linear-gradient(0deg,var(--bg),transparent 30%)}
+.hero .in{position:relative;z-index:3;max-width:900px}
+.hero h1{font-size:clamp(64px,11.5vw,190px);line-height:.88;letter-spacing:.03em}
+.hero h1 .w{display:block;white-space:nowrap}
+.hero h1 .c{display:inline-block;will-change:transform}
+.hero h1 .w:nth-child(2){color:var(--red);padding-left:.6em}
+.hero p{max-width:44ch;margin-top:26px;font-size:18px;color:rgba(255,255,255,.82)}
+.ringbtn{position:absolute;z-index:4;right:max(var(--gut),8vw);bottom:12svh;width:clamp(150px,15vw,210px);aspect-ratio:1;display:grid;place-items:center;text-decoration:none;color:#fff}
+.ringbtn svg{position:absolute;inset:0;width:100%;height:100%;will-change:transform}
+.ringbtn text{font:600 11.5px var(--f-display);letter-spacing:.34em;fill:#fff;text-transform:uppercase}
+.ringbtn b{width:46%;aspect-ratio:1;border-radius:50%;background:var(--red);display:grid;place-items:center;font:600 13px/1.1 var(--f-display);letter-spacing:.12em;text-transform:uppercase;text-align:center;transition:transform .4s}
+.ringbtn:hover b{transform:scale(1.12)}
+@media (max-width:760px){.ringbtn{right:var(--gut);bottom:40px;width:130px}}
+
+/* manifesto: words fill with scroll */
+.manifesto{padding:clamp(120px,16vw,220px) var(--gut);max-width:1180px;margin:0 auto}
+.manifesto p{font:700 clamp(34px,5.4vw,78px)/1.08 var(--f-display);text-transform:uppercase;letter-spacing:.03em}
+.manifesto .wd{color:rgba(255,255,255,.14);transition:color .25s}
+.manifesto .wd.on{color:#fff}
+.manifesto .wd.red.on{color:var(--red)}
+html:not(.motion) .manifesto .wd{color:#fff}
+
+/* services on a wave */
+.wave-head{padding:0 var(--gut);max-width:1180px;margin:0 auto}
+.kick{font:600 14px var(--f-display);letter-spacing:.24em;text-transform:uppercase;color:var(--red)}
+.big{font-size:clamp(44px,7vw,110px);line-height:.92;margin:14px 0 18px}
+.lead{font-size:18px;color:var(--muted);max-width:52ch;line-height:1.65}
+.wave{position:relative;height:clamp(560px,62vw,760px);margin:30px 0 40px}
+.bub{position:absolute;left:0;top:0;width:var(--s);aspect-ratio:1;translate:-50% -50%;will-change:transform}
+.bub .orb{position:absolute;inset:0;border-radius:50%;overflow:hidden;box-shadow:0 0 0 1px rgba(215,0,15,.5),0 30px 60px -20px rgba(13,19,26,.8);transition:border-radius .8s cubic-bezier(.2,.7,.2,1),box-shadow .4s}
+.bub .orb img{width:100%;height:100%;object-fit:cover;transform:scale(1.15)}
+.bub:hover .orb{border-radius:42% 58% 63% 37% / 45% 38% 62% 55%;box-shadow:0 0 0 2px var(--red),0 30px 80px -10px rgba(215,0,15,.55)}
+.bub svg.lab{position:absolute;inset:-18%;width:136%;height:136%;overflow:visible;pointer-events:none}
+.bub svg.lab text{font:600 12px var(--f-display);letter-spacing:.22em;fill:#fff;text-transform:uppercase}
+.bub .tip{position:absolute;left:50%;top:104%;translate:-50% 0;width:max(220px,110%);text-align:center;font-size:14px;color:var(--muted);opacity:0;transition:opacity .3s}
+.bub:hover .tip,.bub:focus-within .tip{opacity:1}
+@media (max-width:760px){
+  .wave{height:auto;display:grid;gap:38px;padding:20px var(--gut)}
+  .bub{position:relative;translate:none;width:min(62vw,260px);justify-self:start}
+  .bub:nth-child(even){justify-self:end}
+  .bub .tip{opacity:1;position:static;translate:none;width:auto;margin-top:calc(18% + 8px)}
+}
+html:not(.motion) .wave{height:auto;display:flex;flex-wrap:wrap;gap:60px 40px;justify-content:center;padding:40px var(--gut) 80px}
+html:not(.motion) .bub{position:relative;translate:none;width:220px}
+html:not(.motion) .bub .tip{opacity:1}
+
+/* white ribbon section: numbers in breathing circles */
+.ribbon{background:#fff;color:var(--black);position:relative;overflow:hidden;padding:clamp(110px,14vw,190px) var(--gut);border-radius:50% 50% 0 0 / 90px 90px 0 0}
+.ribbon .rib{position:absolute;right:-8%;top:4%;width:min(900px,74%);mix-blend-mode:multiply;will-change:transform;pointer-events:none}
+.ribbon .kick{color:var(--red)}
+.ribbon .big{max-width:12ch}
+.dots{display:flex;flex-wrap:wrap;gap:clamp(18px,3vw,40px);margin-top:50px;position:relative}
+.dot{width:clamp(170px,19vw,240px);aspect-ratio:1;border-radius:50%;display:grid;place-content:center;text-align:center;padding:24px;background:var(--light);animation:breathe 9s ease-in-out infinite;will-change:border-radius}
+.dot:nth-child(2){animation-delay:-2s;background:var(--red);color:#fff}
+.dot:nth-child(3){animation-delay:-4s;background:var(--black);color:#fff}
+.dot:nth-child(4){animation-delay:-6s}
+.dot b{font:700 clamp(48px,5vw,76px)/1 var(--f-num)}
+.dot>span{font-size:13px;line-height:1.35;margin-top:8px;opacity:.8}
+@keyframes breathe{0%,100%{border-radius:50%}33%{border-radius:58% 42% 55% 45% / 47% 58% 42% 53%}66%{border-radius:44% 56% 41% 59% / 56% 44% 60% 40%}}
+
+/* about: blob-masked portrait (mask only, never a filter on the face) */
+.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(30px,6vw,90px);align-items:center;padding:clamp(100px,13vw,170px) var(--gut);max-width:1240px;margin:0 auto}
+.blob{aspect-ratio:1;overflow:hidden;background:var(--light);animation:blob 14s ease-in-out infinite;border-radius:47% 53% 58% 42% / 51% 43% 57% 49%}
+.blob img{width:100%;height:100%;object-fit:cover}
+@keyframes blob{0%,100%{border-radius:47% 53% 58% 42% / 51% 43% 57% 49%}50%{border-radius:58% 42% 44% 56% / 42% 58% 42% 58%}}
+.about p+p{margin-top:14px}
+@media (max-width:860px){.about{grid-template-columns:minmax(0,1fr)}}
+
+/* logos in orbit */
+.orbit{position:relative;height:clamp(560px,70vw,860px);overflow:hidden}
+.orbit .core{position:absolute;left:50%;top:50%;translate:-50% -50%;text-align:center;z-index:2;width:min(420px,70vw)}
+.orbit .ring{position:absolute;left:50%;top:50%;width:0;height:0;will-change:transform}
+.orbit .ring img{position:absolute;max-width:none;width:86px;height:69px;object-fit:contain;translate:-50% -50%;will-change:transform}
+.orbit .ring.r2 img{width:72px;height:58px}
+.orbit .track{position:absolute;left:50%;top:50%;translate:-50% -50%;border-radius:50%;border:1px dashed rgba(255,255,255,.12);pointer-events:none}
+@media (max-width:760px){.orbit .ring img{width:58px;height:46px}.orbit .ring.r2 img{width:50px;height:40px}}
+html:not(.motion) .orbit{height:auto;padding:40px var(--gut)}
+html:not(.motion) .orbit .core{position:static;translate:none;margin:0 auto 30px}
+html:not(.motion) .orbit .ring,html:not(.motion) .orbit .track{display:none}
+
+/* reviews in speech blobs on a curve */
+.voices{position:relative;padding:40px var(--gut) clamp(90px,12vw,150px);max-width:1280px;margin:0 auto}
+.vgrid{display:flex;flex-wrap:wrap;gap:28px;justify-content:center;margin-top:40px}
+.voice{width:min(360px,100%);padding:34px 32px;background:var(--card);box-shadow:inset 0 0 0 1px var(--line);border-radius:62% 38% 55% 45% / 38% 52% 48% 62%;margin:0;will-change:transform}
+.voice:nth-child(3n+2){border-radius:40% 60% 44% 56% / 56% 40% 60% 44%;background:rgba(215,0,15,.12);box-shadow:inset 0 0 0 1px rgba(215,0,15,.4)}
+.voice:nth-child(3n){border-radius:52% 48% 38% 62% / 44% 60% 40% 56%}
+.voice blockquote{margin:0 0 16px;font-size:17.5px;line-height:1.55;font-weight:500}
+.voice figcaption{display:flex;gap:12px;align-items:center;font-size:13px;color:var(--muted)}
+.voice figcaption img{width:42px;height:42px;border-radius:50%;object-fit:cover}
+.voice figcaption b{display:block;color:#fff;font-size:14.5px}
+
+.faqwrap{max-width:900px;margin:0 auto;padding:0 var(--gut) clamp(90px,12vw,150px)}
+.bm-faq details{border-radius:40px;padding:4px 30px;background:var(--card)}
+
+/* finale: the arc bends as you arrive */
+.finale{position:relative;overflow:hidden;min-height:100svh;display:grid;place-content:center;text-align:center;padding:100px var(--gut)}
+.finale video,.finale .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;transform:scaleY(-1)}
+.finale::after{content:"";position:absolute;inset:0;background:radial-gradient(70% 60% at 50% 50%,transparent,var(--bg) 85%)}
+.finale>*:not(video):not(.poster){position:relative;z-index:2}
+.finale svg{width:min(1100px,94vw);height:auto;overflow:visible}
+.finale svg text{font:700 118px var(--f-display);letter-spacing:.05em;fill:#fff;text-transform:uppercase}
+.finale svg tspan.r{fill:var(--red)}
+.finale p{color:rgba(255,255,255,.82);margin:10px 0 30px;font-size:19px}
+.bm-foot{position:relative;z-index:2;border-top:1px solid var(--line)}
+.bm-logos{display:none}
+
+/* ---- v3: Flow on white paper. The hero is a sheet you draw on in red ink ---- */
+.hero{background:#fff;color:var(--black);cursor:crosshair}
+.hero::after{display:none}
+.hero p{color:rgba(13,19,26,.72)}
+.hero .kick{color:var(--red)}
+.hero h1 .w:first-child{color:var(--black)}
+.hero .try{font:600 12px var(--f-display);letter-spacing:.24em;text-transform:uppercase;color:var(--red);margin-top:18px}
+.hero .rib3{position:absolute;right:-6%;top:6%;width:min(820px,62%);z-index:0;will-change:transform;pointer-events:none}
+.hero #trail{position:absolute;inset:0;width:100%;height:100%;z-index:2;pointer-events:none}
+.hero .in{z-index:3}
+.ringbtn{color:var(--black)}
+.ringbtn b{color:#fff}
+.ringbtn text{fill:var(--black)}
+@media (max-width:760px){.hero .rib3{width:90%;right:-20%;top:auto;bottom:6%;opacity:.8}}
+
+/* ---- Studio edition: daylight throughout. Dark type on white and light grey, red for the thread and accents ---- */
+:root{--bg:#fff;--ink:#0D131A;--muted:rgba(13,19,26,.62);--line:rgba(13,19,26,.12);--card:var(--light)}
+#thread path.ghost{stroke:rgba(13,19,26,.08)}
+.manifesto .wd{color:rgba(13,19,26,.12)}
+.manifesto .wd.on{color:var(--black)}
+html:not(.motion) .manifesto .wd{color:var(--black)}
+.bub svg.lab text{fill:var(--black)}
+.bub .orb{box-shadow:0 0 0 1px rgba(215,0,15,.35),0 30px 60px -24px rgba(13,19,26,.35)}
+.orbit .track{border-color:rgba(13,19,26,.14)}
+.voice figcaption b{color:var(--black)}
+.voice:nth-child(3n+2){background:rgba(215,0,15,.08)}
+.finale video,.finale .poster{opacity:.9;transform:none}
+.finale::after{background:radial-gradient(70% 60% at 50% 50%,rgba(255,255,255,.55),var(--bg) 88%)}
+.finale svg text{fill:var(--black)}
+.finale p{color:rgba(13,19,26,.72)}
+.bm-foot{background:#fff}
+
+/* the ribbon photo is a whole studio scene (walls, shadows), not a cut-out: feather it into the page so no box shows */
+.hero .rib3,.ribbon .rib{-webkit-mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#0D131A 55%,transparent 100%);mask-image:radial-gradient(ellipse 50% 50% at 50% 50%,#0D131A 55%,transparent 100%);mix-blend-mode:multiply}
+</style>
+</head>
+<body id="top" class="logo-red">
+<header class="bm-nav" data-bm="nav"></header>
+
+<main id="flow">
+  <svg id="thread" aria-hidden="true"><path class="ghost" id="ghost"/><path id="line"/><circle id="head" r="6"/></svg>
+
+  <section class="sec hero" data-knot data-hero>
+    <img id="ink" class="rib3" src="../shared/img/st_ribbon.webp" alt="" aria-hidden="true">
+    <canvas id="trail" aria-hidden="true"></canvas>
+    <div class="in"><div class="kick" id="eyebrow"></div><h1 id="h1" aria-label="Built for growth."></h1><p id="sub"></p><p class="try" aria-hidden="true" id="try8">Move your mouse — you're holding the ink</p></div>
+    <a class="ringbtn" id="ring1" target="_blank" rel="noopener" aria-label="Start now">
+      <svg viewBox="0 0 200 200" aria-hidden="true"><defs><path id="c1" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs><text><textPath href="#c1">Strategy · Creative · Performance · Built for growth ·</textPath></text></svg>
+      <b>Start<br>now</b>
+    </a>
+  </section>
+
+  <section class="sec manifesto" data-knot aria-label="What we believe"><p id="mani"></p></section>
+
+  <section class="sec" id="services" data-knot>
+    <div class="wave-head"><div class="kick">Our services</div><h2 class="big">Seven currents.<br>One direction.</h2><p class="lead">Hover a circle to see what it does. Every discipline runs toward the same number: your business objective.</p></div>
+    <div class="wave" id="wave"></div>
+  </section>
+
+  <section class="sec ribbon" data-knot>
+    <img class="rib" id="rib" src="../shared/img/st_ribbon.webp" alt="">
+    <div class="kick">Results over hype</div><h2 class="big">Growth you can measure.</h2>
+    <div class="dots" id="dots"></div>
+  </section>
+
+  <section class="sec about" id="about" data-knot></section>
+
+  <section class="sec orbit" id="clients" data-knot>
+    <div class="track" id="t1"></div><div class="track" id="t2"></div>
+    <div class="ring" id="r1"></div><div class="ring r2" id="r2"></div>
+    <div class="core"><div class="kick">Trusted by 200+ clients</div><h2 class="big" style="font-size:clamp(40px,5.6vw,84px)">In our orbit.</h2></div>
+  </section>
+
+  <section class="sec voices" id="reviews" data-knot><div class="kick" style="text-align:center">Google reviews</div><h2 class="big" style="text-align:center">In their words.</h2><div class="vgrid" id="vgrid"></div></section>
+
+  <section class="sec faqwrap" id="faq" data-knot><div class="kick">FAQ</div><h2 class="big">Ask us anything.</h2><div class="bm-faq" data-bm="faq" style="margin-top:34px"></div></section>
+
+  <section class="sec finale" data-knot>
+    <img class="poster" src="../shared/img/pour-poster.webp" alt="">
+    <video id="ink2" muted playsinline loop preload="none" poster="../shared/img/pour-poster.webp" aria-hidden="true"><source src="../shared/video/pour-loop.webm" type="video/webm"><source src="../shared/video/pour-loop.mp4" type="video/mp4"></video>
+    <svg viewBox="0 0 1100 300" role="img" aria-label="Focus. Build. Win."><defs><path id="arc" d="M40,250 Q550,250 1060,250"/></defs><text text-anchor="middle"><textPath href="#arc" startOffset="50%">Focus · Build · <tspan class="r">Win</tspan></textPath></text></svg>
+    <p>Ready for digital marketing? Experience the adventure with us.</p>
+    <div><a class="btn" id="cta2"></a></div>
+  </section>
+</main>
+<footer class="bm-foot" data-bm="foot"></footer>
+
+<script src="../shared/content.js"></script>
+<script src="../shared/kit.js"></script>
+<script>
+const { B, img, esc, stat } = BMK;
+eyebrow.textContent = B.eyebrow;
+h1.innerHTML = ["Built for", "growth."].map((w) => `<span class="w" aria-hidden="true">${[...w].map((c) => `<span class="c">${c === " " ? "&nbsp;" : esc(c)}</span>`).join("")}</span>`).join("");
+sub.textContent = B.sub;
+ring1.href = B.cta.href;
+cta2.href = B.cta.href; cta2.target = "_blank"; cta2.rel = "noopener"; cta2.textContent = B.cta.label + " →";
+// manifesto: the three mantras plus the pillars, each word fills in as the reader reaches it
+const mani = "Sales > Engagement. Results > Hype. Leads > Likes. We think like founders and aim every campaign at one number: your business objective. Strategy. Creative. Performance.";
+document.getElementById("mani").innerHTML = mani.split(" ").map((w) => `<span class="wd${/^(>|Sales|Results|Leads|Performance\.)$/.test(w) ? " red" : ""}">${esc(w)}</span>`).join(" ");
+wave.innerHTML = B.services.map((s, i) => `<div class="bub" style="--s:min(${[210, 180, 230, 185, 215, 170, 200][i]}px,${[12.5, 10.5, 13.5, 11, 12.5, 10, 11.5][i]}vw)" tabindex="0">
+  <div class="orb"><img src="${img(s.img, 1)}" alt="" loading="lazy"></div>
+  <svg class="lab" viewBox="0 0 100 100" aria-hidden="true"><defs><path id="l${i}" d="M50,50 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><text><textPath href="#l${i}">0${i + 1} · ${esc(s.short)} · ${esc(s.short)} ·</textPath></text></svg>
+  <div class="tip"><b style="color:var(--black);display:block;font:600 16px/1.2 var(--f-display);letter-spacing:.06em;text-transform:uppercase">${esc(s.name)}</b>${esc(s.line)}</div></div>`).join("");
+dots.innerHTML = B.stats.map((s) => `<div class="dot"><b>${stat(s)}</b><span>${esc(s.label)}</span></div>`).join("");
+const A = B.about;
+about.innerHTML = `<div class="blob"><img src="${img(A.person.img)}" alt="${esc(A.person.name)}, ${esc(A.person.role)}" loading="lazy"></div>
+  <div><div class="kick">${esc(A.kicker)}</div><h2 class="big" style="font-size:clamp(40px,5.4vw,80px)">${esc(A.title)}</h2>${A.body.map((p) => `<p class="lead">${esc(p)}</p>`).join("")}<p style="margin-top:20px;font-weight:600">${esc(A.person.name)} · <span style="color:var(--muted);font-weight:400">${esc(A.person.role)}</span></p></div>`;
+const half = Math.ceil(B.logos.length / 2);
+const logo = (l) => `<img src="../shared/logos/${l}.webp" alt="${esc(l.replace(/-logo.*|-v2/g, "").replace(/-/g, " "))}" loading="lazy">`;
+r1.innerHTML = B.logos.slice(0, half).map(logo).join(""); r2.innerHTML = B.logos.slice(half).map(logo).join("");
+vgrid.innerHTML = B.reviews.map((r) => `<figure class="voice"><blockquote>“${esc(r.q)}”</blockquote><figcaption><img src="${img(r.img)}" alt="" loading="lazy"><span><b>${esc(r.who)}</b>${esc(r.role)}</span></figcaption></figure>`).join("");
+BMK.init();
+</script>
+<script>
+// Motion layer: organic flow. One rAF loop, scroll + velocity + time. Sections off-screen are skipped.
+(function () {
+  const vids = [ink2]; // v3: the hero is paper, not video; #ink is the ribbon image (still scaled on scroll)
+  if (BMK.reduce) { vids.forEach((v) => v.remove()); return; }
+  document.querySelectorAll(".poster").forEach((p) => p.remove());
+  const vio = new IntersectionObserver((es) => es.forEach((e) => e.isIntersecting ? e.target.play().catch(() => {}) : e.target.pause()));
+  vids.forEach((v) => { v.preload = "auto"; vio.observe(v); });
+
+  const vh = () => innerHeight, flow = document.getElementById("flow");
+  const svg = document.getElementById("thread"), line = document.getElementById("line"), ghost = document.getElementById("ghost"), head = document.getElementById("head");
+  let len = 1, tip = [];
+  // the red thread: a smooth curve that swings between the two edges of the page, one knot per section
+  function buildThread() {
+    const W = flow.clientWidth, H = flow.scrollHeight, top = flow.getBoundingClientRect().top + scrollY;
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    const knots = [...document.querySelectorAll("[data-knot]")].map((el, i) => {
+      const r = el.getBoundingClientRect(); const y = r.top + scrollY - top + r.height * 0.5;
+      return [i % 2 ? W * 0.92 : W * 0.08, y];
+    });
+    knots.unshift([W * 0.5, 0]); knots.push([W * 0.5, H]);
+    let d = `M${knots[0][0]},${knots[0][1]}`;
+    for (let i = 1; i < knots.length; i++) {
+      const [x0, y0] = knots[i - 1], [x1, y1] = knots[i], dy = (y1 - y0) * 0.55;
+      d += ` C${x0},${y0 + dy} ${x1},${y1 - dy} ${x1},${y1}`;
+    }
+    line.setAttribute("d", d); ghost.setAttribute("d", d);
+    len = line.getTotalLength(); line.style.strokeDasharray = `${len} ${len}`;
+    // the glowing tip reads from a table sampled once here, instead of calling getPointAtLength on this long curve every frame
+    tip = []; for (let i = 0; i <= 600; i++) { const q = line.getPointAtLength((len * i) / 600); tip.push(q.x, q.y); }
+  }
+  addEventListener("load", buildThread); addEventListener("resize", buildThread); buildThread();
+
+  const chars = [...document.querySelectorAll("#h1 .c")];
+  const words = [...document.querySelectorAll("#mani .wd")], mani = document.getElementById("mani");
+  const bubs = [...document.querySelectorAll(".bub")];
+  const ringSvg = document.querySelector("#ring1 svg"), labs = bubs.map((b) => b.querySelector("svg.lab"));
+  const t1 = document.getElementById("t1"), t2 = document.getElementById("t2");
+  const voices = [...document.querySelectorAll(".voice")];
+  const arc = document.getElementById("arc"), finale = document.querySelector(".finale");
+  let last = scrollY, vel = 0;
+  const mobile = () => innerWidth < 760;
+  const vis = (el) => { const r = el.getBoundingClientRect(); return r.bottom > -100 && r.top < vh() + 100 ? r : null; };
+
+  function tick(now) {
+    const y = scrollY, t = now / 1000;
+    vel += ((y - last) - vel) * 0.15; last = y;
+    // thread draws up to 60% down the viewport, its head glows at the tip
+    const top = flow.getBoundingClientRect().top + y, reach = Math.max(0, Math.min(1, (y + vh() * 0.6 - top) / flow.scrollHeight));
+    line.style.strokeDashoffset = len * (1 - reach);
+    const f = reach * 600, i0 = Math.min(599, Math.floor(f)), k = f - i0;
+    if (tip.length) { head.setAttribute("cx", tip[i0 * 2] + (tip[i0 * 2 + 2] - tip[i0 * 2]) * k); head.setAttribute("cy", tip[i0 * 2 + 1] + (tip[i0 * 2 + 3] - tip[i0 * 2 + 1]) * k); }
+    svg.dataset.reach = reach.toFixed(3);
+
+    // hero letters: a travelling wave that grows with scroll and flicks with velocity
+    const hr = vis(h1);
+    if (hr) { const k = Math.min(1, y / vh()); chars.forEach((c, i) => c.style.transform = `translate3d(0,${Math.sin(i * 0.55 + t * 1.6) * (6 + k * 60) + vel * 0.6 * Math.sin(i)}px,0) rotate(${Math.sin(i * 0.8 + t) * k * 14}deg)`); }
+    ringSvg.style.transform = `rotate(${t * 18 + y * 0.25}deg)`;
+    const inkR = vis(ink); if (inkR) ink.style.transform = `scale(${1 + Math.min(1, y / vh()) * 0.35}) translateY(${y * 0.25}px)`;
+
+    // manifesto: every word left of the reading line is filled
+    // only while the manifesto is on screen, and one rect per line-start rather than per word
+    const mr = vis(mani);
+    if (mr) { const line60 = vh() * 0.62; for (const w of words) w.classList.toggle("on", w.offsetTop + mr.top - mani.offsetTop < line60); }
+
+    // services ride a wave whose phase is the scroll position
+    const wr = vis(wave);
+    if (wr && !mobile()) {
+      const W = wave.clientWidth, Hh = wave.clientHeight, ph = y * 0.004 + t * 0.35;
+      bubs.forEach((b, i) => {
+        const x = W * (0.09 + i * (0.82 / (bubs.length - 1)));
+        const yy = Hh * 0.5 + Math.sin(i * 1.25 + ph) * Hh * 0.3 + vel * 0.4;
+        b.style.transform = `translate3d(${x}px,${yy}px,0)`;
+        labs[i].style.transform = `rotate(${t * 12 + i * 40 + y * 0.1}deg)`;
+      });
+    } else if (wr) bubs.forEach((b, i) => { b.style.transform = `translate3d(${Math.sin(i * 1.3 + y * 0.004 + t * 0.4) * 22}px,0,0)`; labs[i].style.transform = `rotate(${t * 12 + i * 40}deg)`; });
+
+    const rr = vis(rib); if (rr) rib.style.transform = `translateY(${(rr.top - vh() / 2) * -0.25}px) rotate(${(rr.top - vh() / 2) * 0.02}deg)`;
+
+    // logos orbit: two rings turning in opposite directions, logos stay upright
+    const or = vis(clients);
+    if (or) {
+      const R1 = Math.min(clients.clientWidth, clients.clientHeight) * 0.43, R2 = R1 * 0.7, a = t * 6 + y * 0.06;
+      [[r1, R1, a], [r2, R2, -a * 1.3]].forEach(([ring, R, ang]) => {
+        const kids = ring.children, n = kids.length;
+        ring.style.transform = `rotate(${ang}deg)`;
+        for (let i = 0; i < n; i++) { const th = (i / n) * Math.PI * 2; kids[i].style.transform = `translate3d(${Math.cos(th) * R}px,${Math.sin(th) * R}px,0) rotate(${-ang}deg)`; }
+      });
+      t1.style.width = t1.style.height = R1 * 2 + "px"; t2.style.width = t2.style.height = R2 * 2 + "px";
+    }
+    // voices float like bubbles rising
+    if (vis(vgrid)) voices.forEach((v, i) => v.style.transform = `translate3d(0,${Math.sin(t * 0.9 + i * 1.7) * 12 + ((v.getBoundingClientRect().top - vh() / 2) * (i % 2 ? -0.08 : 0.06))}px,0) rotate(${Math.sin(t * 0.5 + i) * 1.5}deg)`);
+    // finale: the baseline bends into an arc as you arrive
+    const fr = vis(finale);
+    if (fr) { const k = Math.max(0, Math.min(1, 1 - fr.top / vh())); arc.setAttribute("d", `M40,250 Q550,${250 - k * 230} 1060,250`); }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+})();
+</script>
+<script src="../shared/interact.js"></script>
+<script>BMX.ink(document.getElementById("trail"), { mode: "light" });
+if (BMX.touch) try8.textContent = "Drag your finger — you're holding the ink";</script>
+</body>
+</html>

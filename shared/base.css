@@ -1,0 +1,92 @@
+/* Battle Mind rebuild: shared tokens + common sections, per the Battle brand guidelines.
+   Colours: Primary Red #D7000F, Black #0D131A, White, Light #F1F2F2 (namecard back-font). Nothing else.
+   Type: Oswald headlines (tracking +40, leading 90–105%), Oswald uppercase subheads (+20, 110–120%),
+   Inter body (tracking 0, leading 150–170%), DIN Condensed numbers (tracking 0, leading 100%).
+   Each build picks one sanctioned surface: red-on-white, red-on-black or white-on-red. */
+:root{
+  --red:#D7000F; --black:#0D131A; --white:#fff; --light:#F1F2F2;
+  --bg:#fff; --ink:var(--black); --muted:rgba(13,19,26,.66); --line:rgba(13,19,26,.12); --card:#fff; --accent:var(--red);
+  --radius:18px; --gut:clamp(16px,4vw,56px); --maxw:1240px;
+  --f-body:"Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-display:"Oswald","Arial Narrow",sans-serif;
+  --f-num:"DIN Condensed","Barlow Condensed","Oswald",sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;overflow-x:clip}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6;letter-spacing:0;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+html.motion{scroll-behavior:auto}
+img{max-width:100%;display:block}
+a{color:inherit}
+h1,h2,h3{font-family:var(--f-display);font-weight:700;line-height:1;letter-spacing:.04em;margin:0}
+h3{line-height:1.15;letter-spacing:.02em}
+p{margin:0}
+.num{font-family:var(--f-num);font-weight:700;letter-spacing:0;line-height:1}
+.wrap{width:min(var(--maxw),100% - 2*var(--gut));margin-inline:auto}
+.kicker{font-family:var(--f-display);font-size:14px;letter-spacing:.2em;text-transform:uppercase;font-weight:600;line-height:1.15;color:var(--accent)}
+.sub{font-family:var(--f-display);text-transform:uppercase;letter-spacing:.02em;line-height:1.15;font-weight:600}
+.btn{display:inline-flex;align-items:center;gap:.6em;padding:14px 26px;border-radius:999px;background:var(--red);color:#fff;font:600 15px/1 var(--f-display);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;transition:transform .25s,box-shadow .25s,background .25s;min-height:48px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 14px 30px -12px rgba(215,0,15,.7)}
+.btn.inv{background:#fff;color:var(--red)}
+.btn.ghost{background:transparent;color:inherit;box-shadow:inset 0 0 0 1.5px currentColor}
+.rule-red{display:block;width:110px;height:2px;background:var(--red);margin:0 0 22px}
+
+/* nav: BATTLE wordmark, never below the 60px digital minimum */
+.bm-nav{position:fixed;inset:0 0 auto;z-index:50;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px var(--gut);pointer-events:none}
+.bm-nav>*{pointer-events:auto}
+.bm-brand{display:block;width:112px;height:22px;background:url(brand/battle-red.webp) left center/contain no-repeat;text-indent:-999px;overflow:hidden;flex:none}
+body.logo-white .bm-brand{background-image:url(brand/battle-white.webp)}
+.bm-nav .links{display:flex;gap:4px;padding:6px;border-radius:999px;background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 0 0 1px var(--line)}
+.bm-nav .links a{text-decoration:none;font:500 13px/1 var(--f-display);letter-spacing:.14em;text-transform:uppercase;padding:10px 14px;border-radius:999px}
+.bm-nav .links a:hover{background:var(--line)}
+.bm-nav .btn{padding:10px 18px;min-height:40px;font-size:13px}
+@media (max-width:860px){.bm-nav .links{display:none}}
+
+/* client logos sit on a light strip so the badges read as intended */
+.bm-logos{overflow:hidden;background:var(--light);padding:26px 0;mask-image:linear-gradient(90deg,transparent,#0D131A 8%,#0D131A 92%,transparent)}
+.bm-logos .row{display:flex;gap:18px;width:max-content;animation:bm-marq 60s linear infinite}
+.bm-logos .row.rev{animation-direction:reverse;margin-top:14px}
+.bm-logos img{width:120px;height:96px;object-fit:contain;flex:none}
+@keyframes bm-marq{to{transform:translateX(-50%)}}
+/* no motion: the marquee becomes a wrapped grid and its duplicate copy (alt="") is hidden */
+html:not(.motion) .bm-logos{mask-image:none;padding:26px var(--gut)}
+html:not(.motion) .bm-logos .row{width:auto;flex-wrap:wrap;justify-content:center;animation:none}
+html:not(.motion) .bm-logos img[alt=""]{display:none}
+
+/* reviews */
+.bm-reviews{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,320px),1fr));gap:18px}
+.bm-review{background:var(--card);border-radius:var(--radius);padding:26px;box-shadow:0 0 0 1px var(--line);display:flex;flex-direction:column;gap:18px;margin:0}
+.bm-review blockquote{margin:0;font-size:18px;line-height:1.55;font-weight:500}
+.bm-review .who{display:flex;align-items:center;gap:12px;margin-top:auto}
+.bm-review .who img{width:46px;height:46px;border-radius:50%;object-fit:cover;background:var(--light)}
+.bm-review .who b{display:block;font-size:15px}
+.bm-review .who span{font-size:13px;color:var(--muted)}
+.bm-stars{color:var(--red);letter-spacing:2px;font-size:15px}
+
+/* faq */
+.bm-faq{display:grid;gap:12px}
+.bm-faq details{background:var(--card);border-radius:14px;box-shadow:0 0 0 1px var(--line);padding:4px 22px}
+.bm-faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;align-items:center;padding:18px 0;font-weight:600;font-size:17px}
+.bm-faq summary::-webkit-details-marker{display:none}
+.bm-faq summary::after{content:"+";font:300 28px/1 var(--f-display);color:var(--red);transition:transform .3s;flex:none}
+.bm-faq details[open] summary::after{transform:rotate(45deg)}
+.bm-faq details p{padding:0 0 20px;color:var(--muted)}
+
+/* footer: BATTLE group lockup as in the email signature (white wordmark panel + red/black band) */
+.bm-foot{padding:72px 0 40px;font-size:15px}
+.bm-foot .grid{display:grid;grid-template-columns:minmax(0,1.4fr) repeat(2,minmax(0,1fr));gap:40px}
+.bm-foot h3{font:600 13px/1.2 var(--f-display);letter-spacing:.2em;text-transform:uppercase;margin-bottom:14px;color:var(--muted)}
+.bm-foot ul{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.bm-foot a{text-decoration:none}
+.bm-foot a:hover{color:var(--red)}
+.bm-foot .addr{margin-top:16px;color:var(--muted);max-width:40ch}
+.group{margin-top:44px;display:grid;grid-template-columns:auto minmax(0,1fr);border-radius:8px;overflow:hidden;box-shadow:0 0 0 1px var(--line);max-width:760px}
+.group .gl{background:var(--red);color:#fff;font:700 13px/1.2 var(--f-display);letter-spacing:.14em;text-transform:uppercase;padding:18px 22px;display:grid;align-content:center}
+.group .units{background:#fff;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding:16px 22px}
+.group .units div{display:grid;gap:6px}
+.group .units small{font:600 11px/1 var(--f-display);letter-spacing:.2em;color:rgba(13,19,26,.6)}
+.group .units img{height:22px;width:auto}
+.group .units span{font-size:11px;color:rgba(13,19,26,.6)}
+.bm-foot .legal{margin-top:36px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+@media (max-width:760px){.bm-foot .grid{grid-template-columns:minmax(0,1fr)}.group{grid-template-columns:minmax(0,1fr)}.group .units{grid-template-columns:minmax(0,1fr)}}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Battle Mind — Parallax · Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/base.css">
+<style>
+:root{--bg:#fff;--ink:#0D131A;--muted:rgba(13,19,26,.62);--line:rgba(13,19,26,.1);--card:#fff}
+/* depth layers: data-depth = px travelled while the section crosses the screen (+ = sinks, − = rises) */
+[data-depth]{will-change:transform}
+.mul{mix-blend-mode:multiply}
+.hero{position:relative;height:118svh;overflow:hidden;background:#fff;perspective:1200px}
+.hero .L{position:absolute;pointer-events:none}
+.hero .word{left:0;right:0;top:16%;text-align:center;font:700 clamp(90px,17vw,300px)/.9 var(--f-display);letter-spacing:.04em;text-transform:uppercase;color:transparent;-webkit-text-stroke:2px rgba(13,19,26,.1);white-space:nowrap}
+.hero .arrow{right:-8%;top:4%;width:min(900px,66%)}
+.hero .team{right:-3%;bottom:-2%;width:min(760px,60%)}
+/* cubes stay in the left half, so their rising path never crosses the team (no face is ever covered) */
+.hero .cubes{left:-12%;bottom:-16%;width:min(640px,50%)}
+.hero .copy{position:absolute;left:var(--gut);top:20svh;z-index:4;max-width:min(540px,44%)}
+.hero h1{font-size:clamp(40px,5.4vw,84px);line-height:.95;text-transform:uppercase}
+.hero h1 span{display:block}
+.hero h1 span:nth-child(2){color:var(--red)}
+.hero p{max-width:44ch;margin:18px 0 24px;color:var(--muted)}
+@media (max-width:760px){.hero .copy{top:110px;max-width:none;right:var(--gut)}.hero .team{width:120%;right:-10%;bottom:0}.hero .arrow{top:42%;width:90%}.hero .cubes{display:none}}
+
+.band{background:var(--black);color:#fff;padding:60px 0;overflow:hidden;position:relative;z-index:8}
+.band .row{display:flex;gap:40px;white-space:nowrap;font:700 clamp(46px,8vw,120px)/1.05 var(--f-display);letter-spacing:.04em;text-transform:uppercase}
+.band .row span{flex:none}
+.band .row i{font-style:normal;color:var(--red);margin:0 .2em}
+.band .row s{text-decoration:none;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.6)}
+.band .row:nth-child(2){color:var(--red)}
+.band .row:nth-child(2) i{color:#fff}
+
+section.blk{padding:clamp(90px,12vw,150px) 0;position:relative}
+.h2{font-size:clamp(38px,5.2vw,72px);text-transform:uppercase;margin:12px 0 16px;max-width:16ch}
+.lead{font-size:18px;color:var(--muted);max-width:56ch;line-height:1.65}
+.svc-list{display:grid;gap:clamp(70px,10vw,140px);margin-top:70px}
+.svc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,6vw,90px);align-items:center}
+.svc:nth-child(even) .frame{order:2}
+.frame{position:relative;aspect-ratio:4/3.4;border-radius:18px;overflow:hidden;background:var(--black);box-shadow:0 30px 60px -30px rgba(13,19,26,.55)}
+.frame img{position:absolute;left:0;top:-30%;width:100%;height:160%;object-fit:cover}
+.svc .no{font:700 clamp(80px,10vw,150px)/.8 var(--f-num);color:transparent;-webkit-text-stroke:2px rgba(215,0,15,.35)}
+.svc h3{font-size:clamp(28px,3vw,42px);text-transform:uppercase;margin:6px 0 12px}
+.svc p{color:var(--muted);font-size:18px}
+.svc ul{margin:16px 0 0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:8px}
+.svc li{font:500 12px/1 var(--f-display);letter-spacing:.12em;text-transform:uppercase;padding:9px 13px;border-radius:999px;box-shadow:inset 0 0 0 1px var(--line)}
+.float{position:absolute;pointer-events:none;z-index:0}
+@media (max-width:760px){.svc{grid-template-columns:minmax(0,1fr)}.svc:nth-child(even) .frame{order:0}}
+
+.about{background:var(--light)}
+.about .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(30px,6vw,90px);align-items:center}
+.about .pic{position:relative;aspect-ratio:1}
+.about .pic .block{position:absolute;inset:10% 4% 0 14%;background:var(--red);border-radius:18px}
+.about .pic img.p{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.about p+p{margin-top:14px}
+@media (max-width:860px){.about .wrap{grid-template-columns:minmax(0,1fr)}}
+
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:50px;align-items:start}
+.cols>div{display:grid;gap:18px}
+.cols>div:nth-child(2){margin-top:90px}
+@media (max-width:860px){.cols{grid-template-columns:minmax(0,1fr)}.cols>div:nth-child(2){margin-top:0}}
+.bm-logos{margin-top:40px}
+.final{position:relative;overflow:hidden;min-height:92svh;display:grid;align-content:center;background:var(--red);color:#fff;padding:120px var(--gut)}
+.final .t{position:relative;z-index:2;max-width:640px}
+.final h2{font-size:clamp(48px,7.4vw,110px);text-transform:uppercase}
+.final p{margin:16px 0 28px;font-size:19px;opacity:.9}
+.final .crew{position:absolute;right:-2%;bottom:-6%;width:min(560px,60%);z-index:1}
+@media (max-width:760px){.final .crew{opacity:.35}}
+.bm-foot{background:#fff}
+/* big outline words that sit far behind each section */
+.ghost{position:absolute;pointer-events:none;z-index:0;font:700 clamp(120px,22vw,340px)/.85 var(--f-display);letter-spacing:.04em;text-transform:uppercase;color:transparent;-webkit-text-stroke:2px rgba(13,19,26,.07);white-space:nowrap}
+.ghost.num{font-family:var(--f-num);letter-spacing:0}
+.final .ghost{-webkit-text-stroke-color:rgba(255,255,255,.22)}
+section.blk>.wrap,.final .t{position:relative;z-index:2}
+.band .row.thin{font-size:clamp(22px,3vw,40px);color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.35);margin-top:10px}
+.band .row.thin i{color:var(--red);-webkit-text-stroke:0}
+.side{position:absolute;pointer-events:none;z-index:1}
+#clients,#faq{overflow:hidden}
+
+/* Studio hero: a daylight depth stage. Far words, a soft red glow, the ceramic bust in the middle, glass cubes in front.
+   Every layer carries its own depth and pointer pull, so moving the mouse pulls the planes apart. */
+.hero.v3{background:var(--light);color:var(--black)}
+.hero.v3 .word{top:12%;-webkit-text-stroke:2px rgba(13,19,26,.1)}
+.hero.v3 .halo{left:48%;top:14%;width:min(760px,62vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(closest-side,rgba(215,0,15,.16),transparent)}
+.hero.v3 .watch{right:2vw;bottom:0;height:min(88svh,60vw);aspect-ratio:1}
+.hero.v3 .watcher{width:100%;height:100%;perspective:900px}
+.hero.v3 .watcher-img{width:100%;height:100%;object-fit:contain;-webkit-mask-image:radial-gradient(ellipse 48% 56% at 50% 56%,#0D131A 64%,transparent 100%);mask-image:radial-gradient(ellipse 48% 56% at 50% 56%,#0D131A 64%,transparent 100%)}
+.hero.v3 .copy{max-width:min(520px,42%)}
+.hero.v3 h1{color:var(--black)}
+.hero.v3 p{color:rgba(13,19,26,.72)}
+.hero.v3 .try{font:600 12px var(--f-display);letter-spacing:.22em;text-transform:uppercase;color:var(--red);margin:-8px 0 22px}
+/* front clay pebbles stay in the bottom-left band, below and left of the bust's head */
+.hero.v3 .front{left:-10%;bottom:-24%;width:min(900px,70%);mix-blend-mode:multiply;opacity:.95;-webkit-mask-image:linear-gradient(90deg,#0D131A 55%,transparent 85%);mask-image:linear-gradient(90deg,#0D131A 55%,transparent 85%)}
+@media (max-width:760px){.hero.v3 .copy{max-width:none}.hero.v3 .watch{right:-20%;height:54svh;opacity:.6}.hero.v3 .front{display:none}}
+</style>
+</head>
+<body id="top" class="logo-red">
+<header class="bm-nav" data-bm="nav"></header>
+
+<section class="hero v3" id="hero" data-scene data-hero>
+  <div class="L word" data-depth="640" data-blur="6" data-mouse="-18" data-tilt="4" aria-hidden="true">Focus · Build · Win</div>
+  <div class="L halo" data-depth="300" data-mouse="10" aria-hidden="true"></div>
+  <div class="L watch" data-depth="-80" data-mouse="22" data-tilt="3"><div class="watcher" id="watcher"></div></div>
+  <div class="copy" data-depth="420" data-mouse="-14" data-tilt="5"><div class="kicker" id="eyebrow"></div><h1 id="h1"></h1><p id="sub"></p><p class="try" aria-hidden="true" id="try4">Move your mouse — the whole stage moves in depth</p><div><a class="btn" id="cta1"></a></div></div>
+  <img class="L front scr" data-depth="-760" data-mouse="60" data-tilt="10" data-blur="0" src="../shared/img/st_layer_pebbles-m.webp" alt="" aria-hidden="true">
+</section>
+
+<section class="band" data-scene aria-label="What we believe"><div class="row" data-drift="-700"></div><div class="row" data-drift="700"></div><div class="row thin" data-drift="-1100" aria-hidden="true"></div></section>
+
+<section class="blk" id="services" data-scene>
+  <img class="float mul" data-depth="-560" src="../shared/img/st_layer_pebbles-m.webp" alt="" style="width:520px;right:-4%;top:40px;opacity:.5">
+  <div class="ghost" data-depth="520" aria-hidden="true" style="left:-2%;top:40px">Services</div>
+  <div class="wrap"><div class="kicker">Our services</div><h2 class="h2">Seven ways we build growth.</h2><p class="lead">Each one works alone. Put together, they compound.</p>
+  <div class="svc-list" id="svcList"></div></div>
+</section>
+
+<section class="blk about" data-scene style="overflow:hidden"><div class="ghost" data-depth="560" aria-hidden="true" style="right:-4%;top:6%">Battle</div><div class="wrap" id="about"></div></section>
+<section class="blk" id="clients" data-scene><div class="ghost num" data-depth="600" aria-hidden="true" style="right:2%;top:-20px">200+</div><div class="wrap" data-depth="140"><div class="kicker">Trusted by 200+ clients</div><h2 class="h2">Trusted by the best.</h2></div><div data-drift="-360" style="position:relative;z-index:2"><div class="bm-logos" data-bm="logos"></div></div></section>
+<section class="blk" id="reviews" data-scene style="background:var(--light)"><div class="wrap"><div class="kicker">Google reviews</div><h2 class="h2" data-depth="120">Clients who grew with us.</h2><div class="cols" id="cols"></div></div></section>
+<section class="blk" id="faq" data-scene style="background:#fff"><div class="ghost" data-depth="560" aria-hidden="true" style="left:-3%;top:10%">FAQ</div><img class="side mul" data-depth="-620" src="../shared/img/st_layer_arches-m.webp" alt="" style="width:min(460px,40%);right:-8%;top:30%;opacity:.55"><div class="wrap" style="max-width:860px"><div data-depth="160"><div class="kicker">FAQ</div><h2 class="h2">Good questions.</h2></div><div class="bm-faq" data-bm="faq" data-depth="-80" style="margin-top:34px"></div></div></section>
+<section class="final" data-scene>
+  <div class="ghost" data-depth="640" aria-hidden="true" style="left:-2%;bottom:4%">Win.</div>
+  <img class="crew" data-depth="-520" src="../shared/img/team-red-m.webp" alt="The Battle Army">
+  <div class="t" data-depth="280"><div class="kicker" style="color:#fff">Battle Mind Creative</div><h2>Ready for digital marketing?</h2><p>Experience the adventure with us!</p><a class="btn inv" id="cta2"></a></div>
+</section>
+<footer class="bm-foot" data-bm="foot"></footer>
+
+<script src="../shared/content.js"></script>
+<script src="../shared/kit.js"></script>
+<script>
+const { B, img, esc } = BMK;
+eyebrow.textContent = B.eyebrow; h1.innerHTML = B.headline.map((l) => `<span>${esc(l)}</span>`).join(""); sub.textContent = B.sub;
+for (const a of [cta1, cta2]) { a.href = B.cta.href; a.target = "_blank"; a.rel = "noopener"; a.textContent = B.cta.label + " →"; }
+const m = B.mantra.map(([a, b]) => `<span>${a}<i>&gt;</i><s>${b}</s></span>`).join("");
+document.querySelectorAll(".band .row").forEach((r) => (r.innerHTML = m + m + m));
+svcList.innerHTML = B.services.map((s, i) => `<article class="svc">
+  <div class="frame" data-depth="${i % 2 ? 70 : -70}"><img data-depth="-190" src="${img(s.img)}" alt="" loading="lazy"></div>
+  <div><div class="no" data-depth="-260">0${i + 1}</div><h3>${esc(s.name)}</h3><p>${esc(s.line)}</p><ul>${s.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul></div></article>`).join("");
+const A = B.about;
+about.innerHTML = `<div class="pic"><div class="block" data-depth="200"></div><img class="p" data-depth="-110" src="${img(A.person.img)}" alt="${esc(A.person.name)}, ${esc(A.person.role)}" loading="lazy"></div>
+  <div><div class="kicker">${esc(A.kicker)}</div><h2 class="h2">${esc(A.title)}</h2>${A.body.map((p) => `<p class="lead">${esc(p)}</p>`).join("")}<p style="margin-top:20px;font-weight:700">${esc(A.person.name)} · <span style="font-weight:500">${esc(A.person.role)}</span></p></div>`;
+// reviews in three columns, each column travelling at its own speed
+const rv = document.createElement("div"); rv.setAttribute("data-bm", "reviews"); document.body.append(rv);
+BMK.init();
+const figs = [...rv.children]; rv.remove();
+cols.innerHTML = [0, 1, 2].map((c) => `<div data-depth="${[-140, 240, -320][c]}"></div>`).join("");
+figs.forEach((f, i) => cols.children[i % 3].append(f));
+</script>
+<script>
+// Motion layer: parallax. Every [data-depth] layer moves at its own speed relative to its section,
+// so foreground and background separate and the page gains depth. [data-drift] does the same sideways.
+if (!BMK.reduce) {
+  const items = [...document.querySelectorAll("[data-depth],[data-drift]")].map((el) => ({
+    el, d: +(el.dataset.depth || 0), x: +(el.dataset.drift || 0), mouse: +(el.dataset.mouse || 0),
+    tilt: +(el.dataset.tilt || 0), blur: +(el.dataset.blur || 0),
+    scene: el.closest("[data-scene]") || el.parentElement,
+  }));
+  let mx = 0, my = 0, tmx = 0, tmy = 0;
+  addEventListener("pointermove", (e) => { tmx = e.clientX / innerWidth - 0.5; tmy = e.clientY / innerHeight - 0.5; });
+  const frame = () => {
+    mx += (tmx - mx) * 0.06; my += (tmy - my) * 0.06;
+    const vh = innerHeight;
+    // nothing moved (no scroll, pointer settled) or tab hidden: skip the frame's work entirely
+    const still = scrollY === frame.y && Math.abs(tmx - mx) < 0.0005 && Math.abs(tmy - my) < 0.0005;
+    frame.y = scrollY;
+    if (document.hidden || still) { requestAnimationFrame(frame); return; }
+    // read every section's rect first, then write: interleaving reads with style writes forced a layout per layer
+    const rects = new Map();
+    for (const it of items) if (!rects.has(it.scene)) rects.set(it.scene, it.scene.getBoundingClientRect());
+    for (const it of items) {
+      const r = rects.get(it.scene);
+      if (r.bottom < -200 || r.top > vh + 200) continue;
+      // p: 0 when the section's top meets the viewport bottom, 1 when its bottom leaves the top
+      const p = it.scene.id === "hero" ? Math.max(0, -r.top / r.height) : (vh - r.top) / (vh + r.height) - 0.5;
+      const y = p * it.d, x = p * it.x;
+      // hero layers also tilt toward the cursor in perspective, each by its own amount
+      const rot = it.tilt ? ` rotateX(${(-my * it.tilt).toFixed(2)}deg) rotateY(${(mx * it.tilt).toFixed(2)}deg)` : "";
+      it.el.style.transform = `translate3d(${x + mx * it.mouse}px,${y + my * it.mouse}px,0)${rot}`;
+      // far layers go soft as they recede
+      if (it.blur) it.el.style.filter = `blur(${(Math.min(1, p * 1.6) * it.blur).toFixed(2)}px)`;
+    }
+    requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+}
+</script>
+<script src="../shared/interact.js"></script>
+<script>BMX.watcher(document.getElementById("watcher"), { dir: "bust", count: 60 });
+if (BMX.touch) try4.textContent = "Scroll — the stage moves in depth";</script>
+</body>
+</html>

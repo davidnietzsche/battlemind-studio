@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Battle Mind — Scroll Reveal · Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../shared/base.css">
+<style>
+:root{--bg:#0D131A;--ink:#fff;--muted:rgba(255,255,255,.62);--line:rgba(255,255,255,.1);--card:rgba(255,255,255,.03)}
+body{font-size:16.5px}
+h1,h2,h3{text-transform:uppercase}
+/* reveal system: hidden only when motion is on; [data-r] picks the entrance, --d the delay */
+html.motion [data-r]{opacity:0;transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1.1s cubic-bezier(.16,.8,.2,1),filter 1s,clip-path 1.3s cubic-bezier(.7,0,.2,1);transition-delay:var(--d,0s)}
+html.motion [data-r="up"]{transform:translateY(90px)}
+html.motion [data-r="blur"]{filter:blur(22px);transform:translateY(40px) scale(1.06)}
+html.motion [data-r="left"]{transform:translateX(-120px)}
+html.motion [data-r="scale"]{transform:scale(.7) rotate(-6deg)}
+/* cards flip up from the table, hinged at the top edge */
+html.motion [data-r="flip"]{transform:perspective(900px) rotateX(-75deg) translateY(90px);transform-origin:50% 0}
+/* images: a slanted edge sweeps across from the left (degenerate polygon, so IO watches the parent) */
+html.motion [data-r="clip"]{opacity:1;clip-path:polygon(0 0,0 0,-40% 100%,-40% 100%)}
+html.motion [data-r="clip"].in{clip-path:polygon(0 0,140% 0,100% 100%,-40% 100%)}
+html.motion [data-r="clip"] img{transform:scale(1.25);transition:transform 1.8s cubic-bezier(.16,.8,.2,1);transition-delay:var(--d,0s)}
+html.motion [data-r="clip"].in img{transform:none}
+html.motion [data-r].in{opacity:1;transform:none;filter:none}
+/* split headings: each word/letter rises out of its own mask */
+[data-split] .sw{display:inline-block;overflow:hidden;vertical-align:top;white-space:nowrap;padding:.06em .02em .1em;margin:-.06em -.02em -.1em}
+html.motion [data-split] .w{display:inline-block;transform:translateY(115%) rotate(7deg);transform-origin:0 100%;transition:transform 1s cubic-bezier(.16,.8,.2,1);transition-delay:calc(var(--i)*65ms + var(--d,0s))}
+html.motion [data-split].in .w{transform:none}
+html.motion [data-split] .ch{display:inline-block;opacity:0;transform:translateY(80%) rotateX(-90deg);transform-origin:50% 100%;transition:transform .9s cubic-bezier(.16,.8,.2,1),opacity .6s;transition-delay:calc(var(--i)*28ms + var(--d,0s))}
+html.motion [data-split].in .ch{opacity:1;transform:none}
+[data-split] .ch{white-space:pre}
+/* lines that draw themselves */
+.rule{height:1px;background:linear-gradient(90deg,transparent,var(--red) 20%,var(--red) 80%,transparent);transform-origin:left;opacity:.55}
+html.motion .rule[data-r]{opacity:.55;transform:scaleX(0);transition:transform 1.6s cubic-bezier(.7,0,.2,1)}html.motion .rule.in{transform:scaleX(1)}
+.uline{display:block;width:110px;height:2px;background:var(--red);transform-origin:left;margin:18px 0 0}
+html.motion .uline[data-r]{opacity:1;transform:scaleX(0);transition:transform 1s cubic-bezier(.7,0,.2,1) .35s}html.motion .uline.in{transform:scaleX(1)}
+
+.hero{position:relative;padding:170px 0 90px;overflow:hidden;text-align:center}
+.hero::before{content:"";position:absolute;inset:-20% -10% auto;height:120%;background:radial-gradient(38% 40% at 30% 28%,rgba(215,0,15,.38),transparent 70%),radial-gradient(34% 40% at 72% 22%,rgba(215,0,15,.22),transparent 70%);filter:blur(30px);animation:aur 18s ease-in-out infinite alternate}
+@keyframes aur{to{transform:translate3d(-4%,3%,0) rotate(6deg)}}
+.hero>*{position:relative}
+.pill{display:inline-flex;gap:10px;align-items:center;padding:6px 14px 6px 6px;border-radius:999px;background:rgba(255,255,255,.05);box-shadow:inset 0 0 0 1px var(--line);font-size:14px;color:rgba(255,255,255,.82)}
+.pill b{background:var(--red);color:#fff;border-radius:999px;padding:4px 10px;font:700 14px/1 var(--f-num)}
+.hero h1{font-size:clamp(46px,7.4vw,104px);line-height:.95;margin:26px auto 22px;max-width:20ch;color:#fff;perspective:600px}
+.hero p{font-size:clamp(17px,1.5vw,20px);color:var(--muted);max-width:50ch;margin:0 auto 32px}
+.hero .ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.hero .btn.ghost{color:#fff}
+.hero .shot{margin:70px auto 0;width:min(1080px,100%);border-radius:18px;overflow:hidden;box-shadow:0 0 0 1px var(--line),0 60px 120px -40px rgba(215,0,15,.55)}
+.hero .shot img{width:100%;aspect-ratio:16/8;object-fit:cover}
+.mantra{display:flex;justify-content:center;gap:clamp(18px,4vw,60px);flex-wrap:wrap;padding:30px 0 10px;font:600 clamp(18px,2vw,24px)/1.2 var(--f-display);letter-spacing:.12em;text-transform:uppercase}
+.mantra span b{color:var(--red);margin:0 .3em}
+.mantra span s{text-decoration:none;color:var(--muted)}
+
+section.blk{padding:clamp(90px,11vw,140px) 0}
+.head{max-width:720px;margin-bottom:56px}
+.h2{font-size:clamp(36px,4.8vw,66px);margin:14px 0 16px}
+.lead{font-size:18px;color:var(--muted);line-height:1.65}
+.bento{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.tile{position:relative;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.01));box-shadow:inset 0 0 0 1px var(--line);overflow:hidden;padding:26px;display:flex;flex-direction:column;min-height:300px;isolation:isolate}
+.tile:nth-child(1){grid-column:span 4;min-height:380px}
+.tile:nth-child(2){grid-column:span 2}
+.tile:nth-child(3),.tile:nth-child(4),.tile:nth-child(5){grid-column:span 2}
+.tile:nth-child(6),.tile:nth-child(7){grid-column:span 3}
+.tile .tw{position:absolute;right:-6%;bottom:-8%;width:62%;z-index:-1;border-radius:18px;overflow:hidden}
+.tile .tw img{width:100%;opacity:.95}
+.tile:hover .tw{transform:translateY(-8px) rotate(-2deg);transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.tile:nth-child(1) .tw{width:46%}
+.tile::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,#0D131A 25%,transparent 70%)}
+.tile:hover{box-shadow:inset 0 0 0 1px rgba(215,0,15,.6)}
+.tile .n{font:600 12px/1 var(--f-display);letter-spacing:.2em;text-transform:uppercase;color:var(--red)}
+.tile h3{font-size:clamp(22px,2vw,28px);margin:12px 0 8px;max-width:16ch}
+.tile p{color:rgba(255,255,255,.72);font-size:15px;max-width:30ch}
+@media (max-width:900px){.bento{grid-template-columns:minmax(0,1fr)}.tile:nth-child(n){grid-column:auto;min-height:280px}}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin-top:10px}
+.stats>div{padding:28px 24px;border-left:1px solid var(--line)}
+.stats b{display:block;font:700 clamp(56px,5.6vw,88px)/1 var(--f-num);color:var(--red)}
+.stats>div>span{color:var(--muted);font-size:14.5px;display:block;margin-top:8px}
+@media (max-width:860px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.about{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(30px,6vw,80px);align-items:center}
+.about .pic{border-radius:18px;overflow:hidden;background:var(--light);box-shadow:inset 0 0 0 1px var(--line)}
+.about p+p{margin-top:14px}
+@media (max-width:860px){.about{grid-template-columns:minmax(0,1fr)}}
+.lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}
+.lgrid img{width:100%;height:auto;aspect-ratio:5/4;object-fit:contain;background:var(--light);border-radius:12px;padding:6px}
+.bm-review{background:rgba(255,255,255,.04)}
+.bm-faq details{background:transparent}
+.final{text-align:center;padding:clamp(110px,14vw,170px) var(--gut);position:relative;overflow:hidden}
+.final::before{content:"";position:absolute;left:50%;bottom:-60%;width:900px;height:600px;translate:-50% 0;background:radial-gradient(closest-side,rgba(215,0,15,.45),transparent);filter:blur(20px)}
+.final>*{position:relative}
+.final h2{font-size:clamp(46px,7vw,100px)}
+.final p{color:var(--muted);margin:18px 0 30px;font-size:18px}
+.bm-foot{border-top:1px solid var(--line)}
+
+/* ---- v3: light editorial. Same reveal technique, inverted surface ---- */
+:root{--bg:#fff;--ink:#0D131A;--muted:rgba(13,19,26,.62);--line:rgba(13,19,26,.12);--card:#fff}
+.hero::before{opacity:.35}
+.pill{background:var(--light);color:rgba(13,19,26,.8)}
+.hero h1{color:var(--black)}
+.hero .btn.ghost{color:var(--black)}
+.tile{background:var(--light)}
+.tile::after{background:linear-gradient(180deg,var(--light) 25%,transparent 70%)}
+.tile p{color:rgba(13,19,26,.72)}
+.bm-review{background:var(--light)}
+.final::before{opacity:.6}
+/* hero spotlight: a dark room; the pointer is a torch that lights it in full colour */
+.spotwrap{margin:70px auto 0;width:min(1080px,100%)}
+.spot{position:relative;aspect-ratio:16/8;border-radius:18px;overflow:hidden;background:var(--black)}
+html.motion .spot{cursor:none}
+.spot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.spot .dim{opacity:.07;filter:grayscale(1)}
+.spot .lit{-webkit-mask-image:radial-gradient(circle var(--sr,220px) at var(--sx,70%) var(--sy,50%),#0D131A 35%,transparent 100%);mask-image:radial-gradient(circle var(--sr,220px) at var(--sx,70%) var(--sy,50%),#0D131A 35%,transparent 100%)}
+.spot::after{content:"";position:absolute;left:var(--sx,70%);top:var(--sy,50%);width:10px;height:10px;margin:-5px 0 0 -5px;border-radius:50%;background:var(--red);box-shadow:0 0 0 6px rgba(215,0,15,.25);pointer-events:none}
+.spot-hint{position:absolute;left:22px;bottom:18px;margin:0!important;font:600 12px var(--f-display)!important;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.8)!important}
+html:not(.motion) .spot .lit{-webkit-mask-image:none;mask-image:none}
+html:not(.motion) .spot::after,html:not(.motion) .spot-hint{display:none}
+</style>
+</head>
+<body id="top" class="logo-red">
+<header class="bm-nav" data-bm="nav"></header>
+
+<section class="hero">
+  <div class="wrap">
+    <span class="pill" data-r="up"><b>200+</b> clients trust Battle Mind in Malaysia</span>
+    <h1 id="h1" data-split="chars"></h1>
+    <p data-r="blur" style="--d:.5s" id="sub"></p>
+    <div class="ctas" data-r="up" style="--d:.65s"><a class="btn" id="cta1"></a><a class="btn ghost" href="#services">See services</a></div>
+    <div class="spotwrap" data-r="clip" style="--d:.2s"><div class="spot" data-hero>
+      <img class="dim" src="../shared/img/st_gallery.webp" alt="" aria-hidden="true">
+      <img class="lit" id="lit" src="../shared/img/st_gallery.webp" alt="A white sculpture gallery">
+      <p class="spot-hint" aria-hidden="true" id="try5">Move your mouse to light up the gallery</p>
+    </div></div>
+    <div class="mantra" id="mantra"></div>
+  </div>
+</section>
+
+<section class="blk" id="services"><div class="wrap">
+  <div class="head"><div class="kicker" data-r="up">Services</div><h2 data-split="words" class="h2" style="--d:.08s">Everything you need to turn attention into revenue.</h2><span class="uline" data-r></span><p class="lead" data-r="up" style="--d:.16s">Seven disciplines under one roof, all run against your business objective.</p></div>
+  <div class="bento" id="bento"></div>
+</div></section>
+
+<div class="wrap"><div class="rule" data-r></div></div>
+<section class="blk"><div class="wrap"><div class="head"><div class="kicker" data-r="up">By the numbers</div><h2 data-split="words" class="h2">Results over hype.</h2><span class="uline" data-r></span></div><div class="stats" id="stats"></div></div></section>
+<section class="blk" style="padding-top:0"><div class="wrap"><div class="shot2" data-r="clip" style="border-radius:18px;overflow:hidden"><img src="../shared/img/st_gallery.webp" alt="A white sculpture gallery" loading="lazy" style="width:100%"></div></div></section>
+<div class="wrap"><div class="rule" data-r></div></div>
+<section class="blk"><div class="wrap about" id="about"></div></section>
+<div class="wrap"><div class="rule" data-r></div></div>
+<section class="blk" id="clients"><div class="wrap"><div class="head"><div class="kicker" data-r="up">Clients</div><h2 data-split="words" class="h2">Trusted by 200+ brands.</h2><span class="uline" data-r></span></div><div class="lgrid" id="lgrid"></div></div></section>
+<section class="blk" id="reviews" style="padding-top:0"><div class="wrap"><div class="head"><div class="kicker" data-r="up">Google reviews</div><h2 data-split="words" class="h2">What clients say.</h2><span class="uline" data-r></span></div><div class="bm-reviews" data-bm="reviews"></div></div></section>
+<div class="wrap"><div class="rule" data-r></div></div>
+<section class="blk" id="faq"><div class="wrap" style="max-width:860px"><div class="head"><div class="kicker" data-r="up">FAQ</div><h2 data-split="words" class="h2">Frequently asked.</h2><span class="uline" data-r></span></div><div class="bm-faq" data-bm="faq" data-r="up"></div></div></section>
+<section class="final"><div class="kicker" data-r="up">Ready for digital marketing?</div><h2 data-split="chars">Built for growth.</h2><p data-r="up" style="--d:.15s">Experience the adventure with us.</p><a class="btn" id="cta2" data-r="scale" style="--d:.25s"></a></section>
+<footer class="bm-foot" data-bm="foot"></footer>
+
+<script src="../shared/content.js"></script>
+<script src="../shared/kit.js"></script>
+<script>
+const { B, img, esc, stat } = BMK;
+h1.textContent = B.headline.join(" ");
+sub.textContent = B.sub;
+for (const a of [cta1, cta2]) { a.href = B.cta.href; a.target = "_blank"; a.rel = "noopener"; a.textContent = B.cta.label + " →"; }
+mantra.innerHTML = B.mantra.map(([a, b], i) => `<span data-r="up" style="--d:${0.3 + i * 0.1}s">${a}<b>&gt;</b><s>${b}</s></span>`).join("");
+bento.innerHTML = B.services.map((s, i) => `<article class="tile" data-r="flip" style="--d:${(i % 3) * 0.1}s"><span class="n">0${i + 1} — ${esc(s.short)}</span><h3>${esc(s.name)}</h3><p>${esc(s.line)} ${esc(s.points[0])}.</p><div class="tw" data-r="clip" style="--d:${(i % 3) * 0.1 + 0.35}s"><img src="${img(s.img, 1)}" alt="" loading="lazy"></div></article>`).join("");
+stats.innerHTML = B.stats.map((s, i) => `<div data-r="flip" style="--d:${i * 0.12}s"><b>${stat(s)}</b><span>${esc(s.label)}</span></div>`).join("");
+const A = B.about;
+about.innerHTML = `<div class="pic" data-r="clip"><img src="${img(A.person.img)}" alt="${esc(A.person.name)}, ${esc(A.person.role)}" loading="lazy"></div>
+  <div><div class="kicker" data-r="up">${esc(A.kicker)}</div><h2 data-split="words" class="h2" style="--d:.08s">${esc(A.title)}</h2>${A.body.map((p, i) => `<p class="lead" data-r="up" style="--d:${0.16 + i * 0.08}s">${esc(p)}</p>`).join("")}<p data-r="up" style="--d:.35s;margin-top:20px;font-weight:600">${esc(A.person.name)} <span style="color:var(--muted);font-weight:400">· ${esc(A.person.role)}</span></p></div>`;
+lgrid.innerHTML = B.logos.map((l, i) => `<img data-r="scale" style="--d:${(i % 8) * 0.04}s" src="../shared/logos/${l}.webp" alt="${esc(l.replace(/-logo.*|-v2/g, "").replace(/-/g, " "))}" loading="lazy">`).join("");
+BMK.init();
+document.querySelectorAll(".bm-review").forEach((r, i) => { r.dataset.r = "flip"; r.style.setProperty("--d", (i % 3) * 0.1 + "s"); });
+</script>
+<script>
+// Motion layer: scroll-triggered reveal. Each element enters once, the first time it scrolls into view.
+// Nothing is scrubbed or pinned; scrolling only decides *when* each entrance plays.
+// Split headings into masked words or letters (the text stays real text for readers and search).
+document.querySelectorAll("[data-split]").forEach((el) => {
+  const mode = el.dataset.split, words = el.textContent.trim().split(/\s+/);
+  let n = 0;
+  el.setAttribute("aria-label", el.textContent.trim());
+  el.innerHTML = words.map((w) => mode === "chars"
+    ? `<span class="sw" aria-hidden="true">${[...w].map((c) => `<span class="ch" style="--i:${n++}">${BMK.esc(c)}</span>`).join("")}</span>`
+    : `<span class="sw" aria-hidden="true"><span class="w" style="--i:${n++}">${BMK.esc(w)}</span></span>`).join(" ");
+});
+if (!BMK.reduce && "IntersectionObserver" in window) {
+  // A fully clipped element has zero visible area, so IntersectionObserver never reports it.
+  // Clip reveals are therefore watched through their (unclipped) parent.
+  const owner = new Map();
+  const io = new IntersectionObserver((es) => es.forEach((e) => {
+    if (!e.isIntersecting) return;
+    // the target itself (if it is a reveal) plus any clipped children it watches for
+    if (e.target.matches("[data-r],[data-split]")) e.target.classList.add("in");
+    (owner.get(e.target) || []).forEach((el) => el.classList.add("in"));
+    io.unobserve(e.target);
+  }), { rootMargin: "0px 0px -8% 0px", threshold: 0.12 });
+  document.querySelectorAll("[data-r],[data-split]").forEach((el) => {
+    const w = el.dataset.r === "clip" ? el.parentElement : el;
+    if (w !== el) owner.set(w, [...(owner.get(w) || []), el]);
+    io.observe(w);
+  });
+} else document.querySelectorAll("[data-r],[data-split]").forEach((el) => el.classList.add("in"));
+</script>
+<script src="../shared/interact.js"></script>
+<script>BMX.spotlight(document.getElementById("lit"), { size: 210 });
+// the torch dot follows the same variables as the light
+(function () { const lit = document.getElementById("lit"), spot = lit.parentElement;
+  new MutationObserver(() => { spot.style.setProperty("--sx", lit.style.getPropertyValue("--sx")); spot.style.setProperty("--sy", lit.style.getPropertyValue("--sy")); })
+    .observe(lit, { attributes: true, attributeFilter: ["style"] }); })();
+if (BMX.touch) try5.textContent = "Tap and drag to light up the gallery";</script>
+</body>
+</html>

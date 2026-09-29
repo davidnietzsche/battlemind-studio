@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex,nofollow">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Battle Mind — Scroll-Scrubbed Video · Studio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Oswald:wght@500;600;700&family=Barlow+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<link rel="preload" as="image" href="../shared/seq/clay/f001.webp">
+<link rel="stylesheet" href="../shared/base.css">
+<style>
+:root{--bg:#0D131A;--ink:#fff;--muted:rgba(255,255,255,.64);--line:rgba(255,255,255,.12);--card:rgba(255,255,255,.04)}
+h1,h2,h3{text-transform:uppercase}
+.seq{position:relative}
+/* v3 hero: a 360° viewer on white. Pointer X turns the sculpture (the 120-frame orbit), like a product spin page. */
+.spin3{min-height:100svh;background:#fff;color:var(--black);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(24px,4vw,64px);align-items:center;padding:110px var(--gut) 60px}
+.spin3 .kick{font:600 14px var(--f-display);letter-spacing:.24em;text-transform:uppercase;color:var(--red)}
+.spin3 h2{font-size:clamp(46px,6.4vw,104px);line-height:.92;margin:18px 0 20px;color:var(--black)}
+.spin3 h2 em{font-style:normal;color:var(--red)}
+.spin3 p{color:rgba(13,19,26,.7);max-width:44ch;font-size:18px}
+.spin3 .btn{margin-top:26px}
+.viewer{position:relative;aspect-ratio:1;border-radius:28px;overflow:hidden;background:var(--black);box-shadow:0 50px 100px -40px rgba(13,19,26,.6);cursor:ew-resize;touch-action:pan-y}
+.viewer canvas{position:absolute;inset:0;width:100%;height:100%}
+.viewer .scale{position:absolute;left:24px;right:24px;bottom:22px;display:flex;justify-content:space-between;align-items:center;font:600 11px var(--f-display);letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.75);pointer-events:none}
+.viewer .scale i{flex:1;height:2px;margin:0 14px;background:rgba(255,255,255,.2);position:relative;overflow:hidden}
+.viewer .scale i b{position:absolute;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--red);left:calc(var(--k,0)*100% - 4px)}
+@media (max-width:860px){.spin3{grid-template-columns:minmax(0,1fr);padding-top:96px}.viewer{order:-1}}
+.seq .sticky{position:sticky;top:0;height:100svh;overflow:hidden;background:var(--bg)}
+.seq canvas{position:absolute;inset:0;width:100%;height:100%}
+.seq .sticky::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,rgba(13,19,26,.6),transparent 36%),radial-gradient(120% 90% at 50% 50%,transparent 55%,rgba(13,19,26,.8)),
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.08'/%3E%3C/svg%3E")}
+#launch{height:560svh}
+#orbit{height:460svh}
+/* copy that appears at given points of the film */
+.beat{position:absolute;z-index:2;left:var(--gut);right:var(--gut);text-align:center;pointer-events:none}
+.beat.top{top:13svh}.beat.bot{bottom:11svh}.beat.left{left:var(--gut);right:auto;text-align:left;top:50%;translate:0 -50%;max-width:500px}
+html.motion .beat{opacity:0}
+.beat h1{font-size:clamp(46px,7.6vw,118px);line-height:.95;margin:14px 0;text-shadow:0 6px 40px rgba(13,19,26,.6)}
+.beat h1 em{font-style:normal;color:var(--red)}
+.beat h2{font-size:clamp(54px,10vw,160px);line-height:.92;text-shadow:0 6px 40px rgba(13,19,26,.6)}
+.beat h2 em{font-style:normal;color:var(--red)}
+.beat h2 small{display:block;font:600 .2em/1.3 var(--f-display);letter-spacing:.2em;color:rgba(255,255,255,.8);margin-top:.5em}
+.beat p{font-size:18px;color:rgba(255,255,255,.85);max-width:52ch;margin:0 auto;text-shadow:0 2px 16px rgba(13,19,26,.7)}
+.beat .btn{pointer-events:auto;margin-top:22px}
+.hud{position:absolute;z-index:3;right:var(--gut);bottom:24px;font:700 18px/1 var(--f-num);color:var(--muted);display:flex;gap:14px;align-items:center}
+.hud i{display:block;width:120px;height:2px;background:var(--line);position:relative}
+.hud i::after{content:"";position:absolute;inset:0;background:var(--red);transform-origin:left;transform:scaleX(var(--p,0))}
+.svcard{background:rgba(13,19,26,.92);border-radius:18px;padding:28px;box-shadow:0 0 0 1px var(--line);border-left:3px solid var(--red)}
+.svcard .no{font:700 64px/1 var(--f-num);color:var(--red)}
+.svcard h3{font-size:clamp(26px,2.8vw,38px);margin:8px 0 10px}
+.svcard p{color:rgba(255,255,255,.8)}
+.svcard ul{margin:14px 0 0;padding:0;list-style:none;display:grid;gap:6px;font-size:15px;color:rgba(255,255,255,.88)}
+.svcard li::before{content:"— ";color:var(--red)}
+@media (max-width:760px){.beat.left{top:auto;bottom:40px;translate:none;left:var(--gut);right:var(--gut)}.svcard{padding:20px}.svcard .no{font-size:44px}}
+html:not(.motion) #launch,html:not(.motion) #orbit{height:auto}
+html:not(.motion) .seq .sticky{position:relative;height:auto;min-height:70svh;display:grid;align-content:center;gap:24px;padding:100px 0}
+html:not(.motion) .beat{position:relative;inset:auto;translate:none;max-width:none}
+html:not(.motion) .hud{display:none}
+
+section.blk{padding:clamp(90px,12vw,150px) 0}
+.h2{font-size:clamp(42px,6vw,88px);line-height:.95;margin:12px 0 18px}
+.lead{font-size:18px;color:var(--muted);max-width:56ch;line-height:1.65}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:var(--line);border-radius:18px;overflow:hidden;margin-top:48px}
+.stats div{background:var(--bg);padding:32px 26px}
+.stats b{display:block;font:700 clamp(56px,6vw,96px)/1 var(--f-num);color:var(--red)}
+.stats div>span{color:var(--muted);font-size:15px;display:block;margin-top:10px}
+@media (max-width:860px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.merch{margin-top:40px;border-radius:18px;overflow:hidden;display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:0;background:var(--light);color:var(--black)}
+.merch img{width:100%;height:100%;object-fit:cover}
+.merch div{padding:clamp(24px,4vw,48px);display:grid;align-content:center;gap:14px}
+.merch h3{font-size:clamp(28px,3vw,44px)}
+.merch p{color:rgba(13,19,26,.7)}
+@media (max-width:760px){.merch{grid-template-columns:minmax(0,1fr)}}
+.bm-logos{margin-top:40px}
+.bm-foot{border-top:1px solid var(--line)}
+.final{text-align:center;padding:clamp(100px,14vw,180px) var(--gut);background:var(--red)}
+.final h2{font-size:clamp(56px,10vw,150px);line-height:.9}
+.final p{margin:18px auto 30px;font-size:19px;opacity:.9}
+
+/* scrub add-ons: per-letter assembly, canvas push-in, scrubbed stats and merch wipe */
+.beat .ch{display:inline-block;will-change:transform,opacity,filter}
+.seq canvas{transform-origin:50% 55%;will-change:transform}
+.scrub-img{overflow:hidden}
+.scrub-img img{will-change:transform,clip-path}
+.final h2 .ch{display:inline-block}
+.stats b{font-variant-numeric:tabular-nums}
+
+/* ---- Studio edition: daylight films. Clay pieces assemble on a white plinth; captions go dark ---- */
+:root{--bg:#F1F2F2;--ink:#0D131A;--muted:rgba(13,19,26,.62);--line:rgba(13,19,26,.12);--card:#fff}
+.seq .sticky{background:var(--bg)}
+.seq .sticky::after{background:linear-gradient(180deg,rgba(241,242,242,.7),transparent 34%),radial-gradient(120% 90% at 50% 50%,transparent 60%,rgba(241,242,242,.7))!important}
+.beat h1,.beat h2{color:var(--black);text-shadow:0 0 30px rgba(241,242,242,.9),0 0 60px rgba(241,242,242,.8)!important}
+.beat h2 small{color:rgba(13,19,26,.7)!important}
+.beat p{color:rgba(13,19,26,.8)!important;text-shadow:0 0 18px rgba(241,242,242,.95)!important}
+.svcard{background:rgba(255,255,255,.94)!important;color:var(--black)}
+.svcard p,.svcard ul{color:rgba(13,19,26,.75)!important}
+.hud{color:var(--muted)}
+.stats div{background:#fff}
+.final{background:var(--red)}
+.bm-foot{background:#fff}
+</style>
+</head>
+<body id="top" class="logo-red">
+<header class="bm-nav" data-bm="nav"></header>
+
+<section class="spin3" data-hero aria-label="Every angle of growth">
+  <div><div class="kick">Performance-driven digital marketing · Kuala Lumpur</div>
+    <h2>Every angle<br>of <em>growth.</em></h2>
+    <p id="sub3"></p><p style="margin-top:14px;font:600 12px var(--f-display);letter-spacing:.22em;text-transform:uppercase;color:var(--red)" id="try3">Move your mouse across the frame to turn it</p>
+    <a class="btn" id="cta3"></a></div>
+  <div class="viewer" id="viewer"><canvas id="spinc" aria-hidden="true"></canvas><div class="scale" aria-hidden="true"><span>Strategy</span><i><b id="knob"></b></i><span>Performance</span></div></div>
+</section>
+<section class="seq" id="launch" aria-label="Strategy, creative, performance">
+  <div class="sticky">
+    <canvas id="c1" aria-hidden="true"></canvas>
+    <div class="beat top" data-in="0" data-out=".16"><div class="kicker" id="eyebrow"></div><h1 id="h1"></h1><p id="sub"></p></div>
+    <div class="beat bot" data-in=".24" data-out=".42"><h2>Strategy<em>.</em><small>Sales &gt; Engagement</small></h2></div>
+    <div class="beat bot" data-in=".48" data-out=".66"><h2>Creative<em>.</em><small>Results &gt; Hype</small></h2></div>
+    <div class="beat top" data-in=".74" data-out="1.1"><h2>Performance<em>.</em><small>Leads &gt; Likes · Built for growth</small></h2><a class="btn" id="cta1"></a></div>
+    <div class="hud" aria-hidden="true"><span id="hud1">00%</span><i id="bar1"></i></div>
+  </div>
+</section>
+
+<section class="blk" id="services" style="padding-bottom:40px">
+  <div class="wrap"><div class="kicker">Seven disciplines</div><h2 class="h2">Every angle of growth.</h2>
+  <p class="lead">Keep scrolling. The camera circles the build while each discipline comes into view. Scroll up and it runs backwards.</p></div>
+</section>
+<section class="seq" id="orbit" aria-label="Services">
+  <div class="sticky">
+    <canvas id="c2" aria-hidden="true"></canvas>
+    <div class="beat left" data-in="0" data-out="1.1"><div class="svcard" id="svcard" aria-live="polite"></div></div>
+    <div class="hud" aria-hidden="true"><span id="hud2">01 / 07</span><i id="bar2"></i></div>
+  </div>
+</section>
+
+<section class="blk"><div class="wrap"><div class="kicker">Results</div><h2 class="h2">Numbers we answer to.</h2><div class="stats" id="stats"></div>
+  <div class="merch scrub-img" id="merch"><img src="../shared/img/merch.webp" alt="Black and white BATTLE tees and shirt" loading="lazy"><div><div class="kicker">Battle Army</div><h3>Bold in design. Unified in purpose.</h3><p>One crew of strategists, creatives and performance marketers, worn with pride.</p></div></div></div></section>
+<section class="blk" id="clients" style="padding-top:0"><div class="wrap"><div class="kicker">Trusted by 200+ clients</div><h2 class="h2">In good company.</h2></div><div class="bm-logos" data-bm="logos"></div></section>
+<section class="blk" id="reviews" style="padding-top:0"><div class="wrap"><div class="kicker">Google reviews</div><h2 class="h2">Client verdicts.</h2><div class="bm-reviews" data-bm="reviews" style="margin-top:40px"></div></div></section>
+<section class="blk" id="faq" style="padding-top:0"><div class="wrap" style="max-width:860px"><div class="kicker">FAQ</div><h2 class="h2">Before we start.</h2><div class="bm-faq" data-bm="faq" style="margin-top:34px"></div></div></section>
+<section class="final"><div class="kicker" style="color:#fff">Ready for digital marketing?</div><h2 id="finalH">Focus. Build. Win.</h2><p>Experience the adventure with us.</p><a class="btn inv" id="cta2"></a></section>
+<footer class="bm-foot" data-bm="foot"></footer>
+
+<script src="../shared/content.js"></script>
+<script src="../shared/kit.js"></script>
+<script>
+const { B, img, esc, stat } = BMK;
+eyebrow.textContent = B.eyebrow; h1.innerHTML = `${esc(B.headline[0])}<br><em>${esc(B.headline[1])}</em><br>${esc(B.headline[2])}`; sub.textContent = B.sub;
+for (const a of [cta1, cta2]) { a.href = B.cta.href; a.target = "_blank"; a.rel = "noopener"; a.textContent = B.cta.label + " →"; }
+const card = (i) => { const s = B.services[i]; return `<div class="no">0${i + 1}</div><h3>${esc(s.name)}</h3><p>${esc(s.line)}</p><ul>${s.points.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>`; };
+svcard.innerHTML = card(0);
+stats.innerHTML = B.stats.map((s) => `<div><b>${stat(s)}</b><span>${esc(s.label)}</span></div>`).join("");
+// scroll-scrubbed values: rename data-count so kit's time-based count-up leaves these alone
+stats.querySelectorAll("[data-count]").forEach((el) => { el.dataset.scrub = el.dataset.count; el.removeAttribute("data-count"); });
+sub3.textContent = B.sub; cta3.href = B.cta.href; cta3.target = "_blank"; cta3.rel = "noopener"; cta3.textContent = B.cta.label + " →";
+BMK.init();
+if (BMK.reduce) svcard.innerHTML = B.services.map((_, i) => card(i)).join("<hr style='border:0;border-top:1px solid var(--line);margin:22px 0'>");
+</script>
+<script>
+// Motion layer: scroll-scrubbed image sequences. Scroll position picks the frame, so scrolling back rewinds.
+// We draw WebP frames to a canvas instead of seeking an <video> (seeking stutters and can't rewind smoothly).
+const SEQ = { clay: 144, clayspin: 120 }; // frame counts, filled from the extracted sequences
+function Sequence(canvas, dir, count, section, onProgress) {
+  const ctx = canvas.getContext("2d"), frames = new Array(count);
+  let shown = -1, target = 0, cur = 0, last = performance.now();
+  const src = (i) => `../shared/seq/${dir}/f${String(i + 1).padStart(3, "0")}.webp`;
+  const load = (i) => { if (frames[i]) return; const im = new Image(); im.decoding = "async"; im.src = src(i); im.onload = () => { if (shown === -1 || Math.abs(i - target) < 3) draw(true); }; frames[i] = im; };
+  // first frame now, then key frames, then the rest, so a fast scroll never lands on a blank canvas
+  load(0); for (let s = 16; s >= 1; s = s >> 1) for (let i = 0; i < count; i += s) load(i);
+  const nearest = (i) => { for (let d = 0; d < count; d++) { for (const j of [i - d, i + d]) { const f = frames[j]; if (f && f.complete && f.naturalWidth) return f; } } };
+  function size() { const r = devicePixelRatio > 1 ? 1.5 : 1; canvas.width = canvas.clientWidth * r; canvas.height = canvas.clientHeight * r; shown = -2; draw(true); }
+  function draw(force) {
+    const i = Math.round(cur);
+    if (i === shown && !force) return;
+    const f = nearest(i); if (!f) return;
+    const cw = canvas.width, ch = canvas.height, k = Math.max(cw / f.naturalWidth, ch / f.naturalHeight);
+    const w = f.naturalWidth * k, h = f.naturalHeight * k;
+    ctx.drawImage(f, (cw - w) / 2, (ch - h) / 2, w, h);
+    shown = i; canvas.dataset.frame = i;
+  }
+  function progress() { const r = section.getBoundingClientRect(); return Math.min(1, Math.max(0, -r.top / (r.height - innerHeight))); }
+  function tick(now = performance.now()) {
+    const el = (now - last) / 1000; last = now;
+    const r = section.getBoundingClientRect();
+    if (r.bottom < -innerHeight || r.top > innerHeight * 2) { requestAnimationFrame(tick); return; } // off-screen: skip the work
+    const p = progress(); target = p * (count - 1);
+    cur += (target - cur) * (1 - Math.exp(-el * 14)); if (Math.abs(target - cur) < 0.05) cur = target; // time-based easing between frames
+    draw(); onProgress && onProgress(p, Math.round(cur));
+    requestAnimationFrame(tick);
+  }
+  addEventListener("resize", size); size(); requestAnimationFrame(tick);
+}
+// Split the text of h1/h2 inside a node into per-letter spans (keeps <em>, leaves <small> and <br> whole).
+function splitChars(root) {
+  const out = [];
+  const walk = (n) => {
+    for (const c of [...n.childNodes]) {
+      if (c.nodeType === 3) {
+        const frag = document.createDocumentFragment();
+        for (const w of c.textContent.split(/(\s+)/)) {
+          if (!w) continue;
+          if (/^\s+$/.test(w)) { frag.append(w); continue; }
+          const word = document.createElement("span"); word.style.whiteSpace = "nowrap"; word.style.display = "inline-block";
+          for (const ch of w) { const sp = document.createElement("span"); sp.className = "ch"; sp.textContent = ch; word.append(sp); out.push(sp); }
+          frag.append(word);
+        }
+        c.replaceWith(frag);
+      } else if (c.nodeType === 1 && c.tagName !== "SMALL" && c.tagName !== "BR") walk(c);
+    }
+  };
+  walk(root); return out;
+}
+const clamp = (x) => Math.min(1, Math.max(0, x)), ease = (x) => 1 - Math.pow(1 - x, 3);
+function beats(section) {
+  const bs = [...section.querySelectorAll(".beat")].map((el) => {
+    const h = el.querySelector("h1,h2"); const chars = h ? splitChars(h) : [];
+    chars.forEach((c, i) => (c.dataset.r = ((i * 37) % 11) / 10 - 0.5)); // stable pseudo-random spread per letter
+    return { el, a: +el.dataset.in, b: +el.dataset.out, chars };
+  });
+  return (p) => onScreen(section) && bs.forEach(({ el, a, b, chars }) => {
+    const fade = 0.05, o = Math.min(1, Math.max(0, Math.min((p - a) / fade + (a === 0 ? 1 : 0), (b - p) / fade)));
+    el.style.opacity = Math.min(1, o * 3); el.style.transform = `translateY(${(1 - o) * 30}px)`;
+    // letters assemble with scroll: each one flies in from its own direction, staggered left to right
+    const inT = a === 0 ? 1 : (p - a) / 0.09, outT = (b - p) / 0.09, n = chars.length;
+    if (o === 0 && el._k0) return; // fully out: letters already parked, nothing to write
+    el._k0 = o === 0;
+    chars.forEach((c, i) => {
+      const st = (i / Math.max(1, n - 1)) * 0.45, k = Math.round(ease(clamp(Math.min(inT, outT) * 1.45 - st)) * 200) / 200, r = +c.dataset.r;
+      if (k === c._k) return; // unchanged since last frame: skip the style writes
+      c._k = k;
+      c.style.opacity = k;
+      c.style.transform = k === 1 ? "" : `translate3d(${r * 160 * (1 - k)}px,${(1 - k) * (i % 2 ? 90 : -90)}px,0) rotate(${r * 70 * (1 - k)}deg) scale(${0.4 + 0.6 * k})`;
+    });
+  });
+}
+// section progress while it crosses the viewport: 0 = top edge at the bottom of the screen, 1 = bottom edge at the top
+const cross = (el) => { const r = el.getBoundingClientRect(); return clamp((innerHeight - r.top) / (innerHeight + r.height)); };
+const onScreen = (el) => { const r = el.getBoundingClientRect(); return r.bottom > -innerHeight * 0.5 && r.top < innerHeight * 1.5; };
+if (!BMK.reduce) {
+  const b1 = beats(launch), b2 = beats(orbit);
+  // canvas push-in: the film zooms 1.0 → 1.4 across the launch; the orbit eases from 1.25 back to 1.0 with a slight turn
+  Sequence(c1, "clay", SEQ.clay, launch, (p) => {
+    b1(p); bar1.style.setProperty("--p", p); hud1.textContent = String(Math.round(p * 100)).padStart(2, "0") + "%";
+    c1.style.transform = `scale(${(1 + 0.4 * ease(p)).toFixed(4)}) translateY(${(p * -4).toFixed(2)}%)`;
+  });
+  let si = 0;
+  Sequence(c2, "clayspin", SEQ.clayspin, orbit, (p) => {
+    b2(p); bar2.style.setProperty("--p", p);
+    c2.style.transform = `scale(${(1.25 - 0.25 * ease(p)).toFixed(4)}) rotate(${((0.5 - p) * 6).toFixed(2)}deg)`;
+    const i = Math.min(6, Math.floor(p * 7));
+    if (i !== si) { si = i; svcard.innerHTML = card(i); hud2.textContent = `0${i + 1} / 07`; }
+  });
+  // the rest of the page is scrubbed too: stat values, the merch wipe/zoom and the closing headline's letters
+  const statEls = [...stats.querySelectorAll("[data-scrub]")], merchImg = document.querySelector("#merch img");
+  const fin = splitChars(finalH); fin.forEach((c, i) => (c.dataset.r = ((i * 37) % 11) / 10 - 0.5));
+  const statsBlock = stats.closest("section"), finalBlock = finalH.closest("section");
+  (function page() {
+    if (onScreen(statsBlock)) {
+      const q = ease(clamp((cross(stats) - 0.12) / 0.4));
+      statEls.forEach((el) => { const to = +el.dataset.scrub, from = el.dataset.prefix ? parseFloat(el.dataset.prefix) : 0;
+        const t = (el.dataset.prefix || "") + Math.round(from + (to - from) * q) + (el.dataset.suffix || ""); if (el.textContent !== t) el.textContent = t; });
+      const m = clamp((cross(merch) - 0.1) / 0.45);
+      // slide + settle (transform only; a scrubbed clip-path repainted the photo every frame)
+      merchImg.style.transform = `translate3d(${(-(1 - ease(m)) * 35).toFixed(2)}%,0,0) scale(${(1.35 - 0.35 * ease(m)).toFixed(4)})`;
+      merchImg.style.opacity = (0.15 + 0.85 * ease(m)).toFixed(3);
+    }
+    if (onScreen(finalBlock)) {
+      const q = clamp((cross(finalBlock) - 0.15) / 0.35), n = fin.length;
+      fin.forEach((c, i) => { const k = ease(clamp(q * 1.5 - (i / n) * 0.5)), r = +c.dataset.r;
+        c.style.opacity = k; c.style.transform = k === 1 ? "" : `translate3d(0,${(1 - k) * 120}px,0) rotate(${r * 40 * (1 - k)}deg)`; });
+    }
+    requestAnimationFrame(page);
+  })();
+} else {
+  // still frames for reduced motion
+  for (const [c, d, n] of [[c1, "clay", SEQ.clay], [c2, "clayspin", SEQ.clayspin]]) {
+    const im = new Image(); im.src = `../shared/seq/${d}/f${String(n).padStart(3, "0")}.webp`;
+    c.replaceWith(Object.assign(im, { alt: "", style: "position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.35" }));
+  }
+}
+</script>
+<script src="../shared/interact.js"></script>
+<script>
+BMX.hoverScrub(document.getElementById("spinc"), { dir: "clayspin", count: SEQ.clayspin });
+if (BMX.touch) try3.textContent = "Drag sideways across the frame to turn it";
+new MutationObserver(() => knob.style.setProperty("--k", (+spinc.dataset.frame || 0) / 119)).observe(spinc, { attributes: true, attributeFilter: ["data-frame"] });
+</script>
+</body>
+</html>
